@@ -1,0 +1,173 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Usuario</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+
+        <form [formGroup]="usuarioFormGroup">
+
+          <h5 class="card-title">Dados do usuario</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+
+            <div class="row">
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input formControlName="nome" type="text" class="form-control" id="nome"
+                         [class.ng-touched.ng-invalid]="usuarioFormGroup!.get('nome')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="usuarioFormGroup!.get('nome')!.touched && usuarioFormGroup!.get('nome')!.invalid">
+                    Nome obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="nome">E-mail</label>
+                  <input formControlName="email" type="email" class="form-control" id="email"
+                         [class.ng-touched.ng-invalid]="usuarioFormGroup!.get('email')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="usuarioFormGroup!.get('email')!.touched && usuarioFormGroup!.get('email').getError('required')">
+                    E-mail obrigatório.
+                  </small>
+                  <small class="form-text text-danger"
+                         *ngIf="usuarioFormGroup!.get('email')!.getError('email')">
+                    E-mail inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="!usuarioFormGroup!.get('id')!.value">
+                <div class="form-group">
+                  <label for="nome">Senha</label>
+                  <input formControlName="senha" type="password" class="form-control" id="senha"
+                         [class.ng-touched.ng-invalid]="usuarioFormGroup!.get('senha')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="usuarioFormGroup!.get('senha')!.touched && usuarioFormGroup!.get('senha')!.invalid">
+                    Senha obrigatória.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="!usuarioFormGroup!.get('id')!.value">
+                <div class="form-group">
+                  <label for="nome">Repetir Senha</label>
+                  <input formControlName="senhaRepetida" type="password" class="form-control" id="senhaRepetida"
+                         [class.ng-touched.ng-invalid]="usuarioFormGroup!.get('senhaRepetida')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="usuarioFormGroup!.get('senhaRepetida')!.touched && usuarioFormGroup!.get('senhaRepetida')!.invalid">
+                    Digite novamente a senha.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12" *ngIf="usuarioFormGroup!.get('id')!.value">
+                <div class="form-group">
+
+                  <label for="nome">Senha</label>
+
+                  <div class="input-group mb-3" >
+                    <input type="password" formControlName="senha" type="password" class="form-control" id="senha"
+                           [class.ng-touched.ng-invalid]="usuarioFormGroup!.get('senha')!.invalid"
+                           [readOnly]="usuarioFormGroup!.get('id')!.value">
+                    <div class="input-group-append" >
+                      <button class="btn mr-0 btn-info" type="button" (click)="abrirModalTrocarSenha(modalTrocarSenha)">Trocar senha</button>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+
+
+          </div>
+
+
+        </form>
+
+
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="usuarioFormGroup!.get('id')!.value"
+                      class="btn btn-danger">Excluir
+              </button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/usuario" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #modalTrocarSenha let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Trocar senha</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form  [formGroup]="trocarSenhaFormGroup">
+      <div class="row">
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="nome">Nova Senha</label>
+            <input formControlName="senha" type="password" class="form-control" id="senha"
+                   [class.ng-touched.ng-invalid]="trocarSenhaFormGroup!.get('senha')!.invalid">
+            <small class="form-text text-danger"
+                   *ngIf="trocarSenhaFormGroup!.get('senha')!.touched && trocarSenhaFormGroup!.get('senha')!.invalid">
+              Senha obrigatória.
+            </small>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="nome">Repetir Senha</label>
+            <input formControlName="senhaRepetida" type="password" class="form-control" id="senhaRepetida"
+                   [class.ng-touched.ng-invalid]="trocarSenhaFormGroup!.get('senhaRepetida')!.invalid">
+            <small class="form-text text-danger"
+                   *ngIf="trocarSenhaFormGroup!.get('senhaRepetida')!.touched && trocarSenhaFormGroup!.get('senhaRepetida')!.invalid">
+              Repetir a senha.
+            </small>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="trocarSenha()" [disabled]="trocarSenhaFormGroup.invalid" >Confirmar</button>
+  </div>
+</ng-template>
+
+

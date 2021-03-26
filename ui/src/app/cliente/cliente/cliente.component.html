@@ -1,0 +1,443 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Cliente</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+
+
+        <form [formGroup]="clienteFormGroup">
+
+          <h5 class="card-title">Dados do cliente</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+
+            <div class="row">
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nome">Nome do cliente</label>
+                  <input formControlName="nome" type="text" class="form-control" id="nome"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('nome')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('nome')!.touched && clienteFormGroup!.get('nome')!.invalid">
+                    Nome obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="nome">Tipo</label>
+
+                  <select class="form-control" formControlName="tipoPessoa">
+                    <option [ngValue]="'FISICA'">Física</option>
+                    <option [ngValue]="'JURIDICA'">Jurídica</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="control-label">Status</label>
+                  <div class="custom-control custom-checkbox" style="margin-top: 5px;">
+                    <input type="checkbox" class="custom-control-input" id="ativo" name="ativo" formControlName="ativo">
+                    <label for="ativo" class="custom-control-label">Ativo</label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- JURÍDICA -->
+            <div class="row" *ngIf="clienteFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label >CNPJ</label>
+                  <input type="text" class="form-control" id="cnpj" name="cnpj" formControlName="cnpj" mask="00.000.000/0000-00"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('cnpj')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('cnpj')!.getError('cnpjNotValid')">
+                    CNPJ inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="indicadorInscricaoEstadual">Indicador de inscrição estadual</label>
+                  <select type="text" class="form-control" id="indicadorInscricaoEstadual"
+                          formControlName="indicadorInscricaoEstadual">
+                    <option [ngValue]="'NAO_CONTRIBUIENTE'">Não contribuiente</option>
+                    <option [ngValue]="'CONTRIBUIENTE'">Contribuiente</option>
+                    <option [ngValue]="'CONTRIBUIENTE_ISENTO'">Contribuiente Isento</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="razaoSocial">Razão Social</label>
+                  <input type="text" class="form-control" id="razaoSocial" name="razaoSocial"
+                         formControlName="razaoSocial">
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="control-label">Optante pelo SIMPLES</label>
+                  <div class="custom-control custom-checkbox" style="margin-top: 5px;">
+                    <input type="checkbox" class="custom-control-input" id="optanteSIMPLES" name="optanteSIMPLES"
+                           formControlName="optanteSIMPLES">
+                    <label for="optanteSIMPLES" class="custom-control-label">Sim</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="inscricaoEstadual">Inscrição estadual</label>
+                  <input type="text" class="form-control" id="inscricaoEstadual" name="inscricaoEstadual"
+                         formControlName="inscricaoEstadual">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="inscricaoMunicipal">Inscrição municipal</label>
+                  <input type="text" class="form-control" id="inscricaoMunicipal" name="inscricaoMunicipal"
+                         formControlName="inscricaoMunicipal">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="inscricaoSUFRAMA">Inscrição SUFRAMA</label>
+                  <input type="text" class="form-control" id="inscricaoSUFRAMA" name="inscricaoSUFRAMA"
+                         formControlName="inscricaoSUFRAMA">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="email">Email principal</label>
+                  <input type="email" class="form-control" id="email" name="email" formControlName="email"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('email')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('email')!.getError('email')">
+                    E-mail inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Telefone comercial</label>
+                  <input type="text" class="form-control" mask="(00) 0000-0000||(00) 0 0000-0000" id="telefoneComercial"
+                         name="telefoneComercial" formControlName="telefoneComercial"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('telefoneComercial')!.invalid" >
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('telefoneComercial')!.invalid">
+                    Telefone comercial inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Telefone celular</label>
+                  <input type="text" class="form-control" mask="(00) 0000-0000||(00) 0 0000-0000" id="telefoneCelular"
+                         name="telefoneCelular" formControlName="telefoneCelular"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('telefoneCelular')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('telefoneCelular')!.invalid">
+                    Telefone celular inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>Data de Fundação</label>
+                  <input type="date" class="form-control" id="dataFundacao" name="dataFundacao"
+                         formControlName="dataFundacao">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="dataCadastro">Data de cadastro</label>
+                  <input type="date" class="form-control" readonly id="dataCadastro" name="dataCadastro"
+                         formControlName="dataCadastro">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- FÍSICA -->
+            <div class="row" *ngIf="clienteFormGroup.get('tipoPessoa')!.value=='FISICA'">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" mask="000.000.000-00"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('cpf')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('cpf')!.getError('cpfNotValid')">
+                    CPF inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="rg">RG</label>
+                  <input type="text" class="form-control" id="rg" name="rg" formControlName="rg">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="indicadorInscricaoEstadual">Contribuiente</label>
+                  <select type="text" class="form-control" id="indicadorInscricaoEstadual"
+                          name="indicadorInscricaoEstadual" formControlName="indicadorInscricaoEstadual">
+                    <option [ngValue]="'NAO_CONTRIBUIENTE'">Não contribuiente</option>
+                    <option [ngValue]="'CONTRIBUIENTE'">Contribuiente</option>
+                    <option [ngValue]="'CONTRIBUIENTE_ISENTO'">Contribuiente Isento</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="inscricaoEstadual">Inscrição estadual</label>
+                  <input type="text" class="form-control" id="inscricaoEstadual" name="inscricaoEstadual"
+                         formControlName="inscricaoEstadual">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="email">Email principal</label>
+                  <input type="email" class="form-control"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('email')!.invalid" id="email" name="email"
+                         formControlName="email">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('email')!.getError('email')">
+                    E-mail inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Telefone comercial</label>
+                  <input type="text" class="form-control" mask="(00) 0000-0000||(00) 0 0000-0000" id="telefoneComercial"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('telefoneComercial')!.invalid"
+                         name="telefoneComercial" formControlName="telefoneComercial">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('telefoneComercial')!.invalid">
+                    Telefone comercial inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Telefone celular</label>
+                  <input type="text" class="form-control" mask="(00) 0000-0000||(00) 0 0000-0000" id="telefoneCelular"
+                         [class.ng-touched.ng-invalid]="clienteFormGroup!.get('telefoneCelular')!.invalid"
+                         name="telefoneCelular" formControlName="telefoneCelular">
+                  <small class="form-text text-danger"
+                         *ngIf="clienteFormGroup!.get('telefoneCelular')!.invalid">
+                    Telefone celular inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="dataAniversario">Data de aniversário</label>
+                  <input type="date" class="form-control" id="dataAniversario" name="dataAniversario"
+                         formControlName="dataAniversario">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="dataCadastro">Data de cadastro</label>
+                  <input type="date" class="form-control" readonly id="dataCadastro" name="dataCadastro"
+                         formControlName="dataCadastro">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- OBSERVAÇÃO -->
+            <div class="row">
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="observacao">Observações</label>
+                  <textarea class="form-control" rows="5" id="observacao" name="observacao"
+                            formControlName="observacao"></textarea>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <h5 class="card-title">Contatos do cliente</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body" formArrayName="contatos">
+
+            <div class="row" *ngFor="let item of contatos().controls; let i = index;" [formGroupName]="i">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="item.nome{{i}}">Nome</label>
+                  <input type="text" class="form-control" formControlName="nome" id="item.nome{{i}}">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="item.email{{i}}">Email</label>
+
+                  <input type="email" class="form-control"
+                         [class.ng-touched.ng-invalid]="item.get('email')!.invalid" id="item.email{{i}}" name="item.email{{i}}"
+                         formControlName="email">
+                  <small class="form-text text-danger"
+                         *ngIf="item.get('email')!.invalid">
+                    E-mail inválido.
+                  </small>
+
+
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="item.fone{{i}}">Fone</label>
+                  <input type="text" [class.ng-touched.ng-invalid]="item.get('fone')!.invalid" class="form-control" mask="(00) 0000-0000||(00) 0 0000-0000" formControlName="fone"
+                         id="item.fone{{i}}">
+                  <small class="form-text text-danger"
+                         *ngIf="item.get('fone')!.invalid">
+                    Fone inválido.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-3">
+
+                <div class="form-group">
+                  <label for="item.cargo{{i}}">Cargo</label>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" style="margin-right: 20px;" formControlName="cargo"
+                           id="item.cargo{{i}}">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-danger mr-0" type="button" (click)="excluirContato(i)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom: 20px">
+              <div class="col-lg-2 col-md-4">
+                <button type="button" class="btn btn-block btn-outline-secondary" (click)="novoContato()">Novo contato
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+
+          <h5 class="card-title">Endereço do cliente</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+            <div class="row">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cep">CEP</label>
+                  <input type="text" class="form-control" formControlName="cep" name="cep" id="cep" mask="00.000-000"
+                         (blur)="consultarCep()">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="endereco">Endereço</label>
+                  <input type="text" class="form-control" formControlName="endereco" name="endereco" id="endereco">
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="numero">Número</label>
+                  <input type="text" class="form-control" formControlName="numero" name="numero" id="numero">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="complemento">Complemento</label>
+                  <input type="text" class="form-control" formControlName="complemento" name="complemento"
+                         id="complemento">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="bairro">Bairro</label>
+                  <input type="text" class="form-control" formControlName="bairro" name="bairro" id="bairro">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cidade">Cidade</label>
+                  <input type="text" class="form-control" formControlName="cidade" name="cidade" id="cidade" readonly>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="clienteFormGroup!.get('id')!.value"
+                      class="btn btn-danger">Excluir
+              </button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/cliente" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+export enum TipoServico {
+
+  PRESTADO = 'PRESTADO',
+  TOMADO = 'TOMADO',
+  PRESTADO_TOMADO = 'PRESTADO_TOMADO'
+}

@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800');
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+/* Ao passar o mouse nas linhas do DataTable muda o curso do mouse  */
+.datatable-row-wrapper:hover{
+  cursor: pointer !important;
+}
+
+/* NG Select  */
+ng-select.ng-invalid .ng-select-container {
+  border-color: #dc3545;
+}

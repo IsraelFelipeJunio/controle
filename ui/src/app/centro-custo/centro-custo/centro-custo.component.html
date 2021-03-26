@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Centro de Custo</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+
+
+        <form [formGroup]="centroCustoFormGroup">
+          <div class="form-body">
+
+            <div class="row">
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input formControlName="nome" type="text" class="form-control" id="nome" placeholder="Nome" [class.ng-touched.ng-invalid]="centroCustoFormGroup!.get('nome')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="centroCustoFormGroup!.get('nome')!.touched && centroCustoFormGroup!.get('nome')!.invalid">
+                    Nome obrigatório.
+                  </small>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="centroCustoFormGroup!.get('id')!.value" class="btn btn-danger">Excluir</button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/centro-custo" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
