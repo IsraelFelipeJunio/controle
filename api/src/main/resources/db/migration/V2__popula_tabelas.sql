@@ -4,4 +4,4 @@ INSERT INTO loja (id, tipo_pessoa, nome, cpf, cnpj, razao_social, data_fundacao,
 INSERT INTO loja (id, tipo_pessoa, nome, cpf, cnpj, razao_social, data_fundacao, optante_simples_nacional, vende_produto, vende_servico, inscricao_municipal, inscricao_estadual, isento_inscricao_estadual, cep, endereco, numero, complemento, bairro, cidade, uf, ibge, gia, ddd, siafi, telefone_comercial, email) VALUES (3, 'JURIDICA', 'Loja 3', null, '91975378000166', 'LOJA 3', null, false, true, true, 'true', null, true, 'true', null, null, null, null, null, null, null, null, null, null, null, null);
 
 -- Usuário
-INSERT INTO usuario (id, nome, email, senha, loja_logada_id) VALUES (1, 'ged', 'ged@ged.com.br', '$2a$10$GH8ZrJ3y7V2tTvv1NFxfgu4iEWNj.NXBrsK8E/Di4X57IURuwW/8O', 1);
+INSERT INTO usuario (id, nome, email, senha, loja_logada_id) VALUES (1, 'controle', 'controle@controle.com.br', '$2a$10$KVoCuuIbSPwcGEGxTQoR/.75I701dBBtz8vuA42VvHo7rkF/HEsau', 1);
