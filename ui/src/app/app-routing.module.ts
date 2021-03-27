@@ -1,9 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 
-import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
-import {AuthGuard} from './service/auth-guard';
+import { FullComponent } from './layouts/full/full.component';
+import { AuthGuard } from './service/auth-guard';
 
 export const Approutes: Routes = [
   {
@@ -34,7 +33,7 @@ export const Approutes: Routes = [
 
 
 
-      { path: 'cliente', loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule) , canActivate: [AuthGuard]},
+      { path: 'projeto', loadChildren: () => import('./projeto/projeto.module').then(m => m.ProjetoModule) , canActivate: [AuthGuard]},
       { path: 'categoria', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) , canActivate: [AuthGuard]},
       { path: 'empresa', loadChildren: () => import('./empresa/empresa.module').then(m => m.EmpresaModule) , canActivate: [AuthGuard]},
       { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) , canActivate: [AuthGuard]},

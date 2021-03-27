@@ -10,8 +10,8 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/cliente',
-        title: 'Clientes',
+        path: '/projeto',
+        title: 'Projetos',
         icon: 'mdi mdi-account-multiple',
         class: '',
         ddclass: '',

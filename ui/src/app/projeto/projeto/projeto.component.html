@@ -1,0 +1,144 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Projeto</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+
+
+        <form [formGroup]="projetoFormGroup">
+
+          <h5 class="card-title">Dados do projeto</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="form-group">
+                  <label for="descricao">Descrição</label>
+                  <input formControlName="descricao" type="text" class="form-control" id="descricao"
+                         [class.ng-touched.ng-invalid]="projetoFormGroup!.get('descricao')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="projetoFormGroup!.get('descricao')!.touched && projetoFormGroup!.get('descricao')!.invalid">
+                    Descrição obrigatória.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="status">Status</label>
+                  <select class="form-control" formControlName="statusProjeto">
+                    <option [ngValue]="'PROBLEMA'">PROBLEMA</option>
+                    <option [ngValue]="'PRE_PROJETO'">PRÉ PROJETO</option>
+                    <option [ngValue]="'EM_ANDAMENTO'">EM ANDAMENTO</option>
+                    <option [ngValue]="'EM_ATRASO'">EM ATRASO</option>
+                    <option [ngValue]="'FINALIZADO'">FINALIZADO</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- JURÍDICA -->
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="andamento">Andamento (%)</label>
+                  <input type="text" class="form-control" readonly id="andamento" name="andamento" formControlName="andamento">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="dataInicio">Data Início</label>
+                  <input type="date" class="form-control" id="dataInicio" name="dataInicio" formControlName="dataInicio">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="dataFinal">Data Final</label>
+                  <input type="date" class="form-control" id="dataFinal" name="dataFinal" formControlName="dataFinal">
+                </div>
+              </div>
+            </div>
+
+            <!-- Projeto Pai -->
+
+            <!-- Categoria -->
+
+          </div>
+
+
+          <!-- <h5 class="card-title">Responsaveis do Projeto</h5>
+          <hr class="m-t-0"> -->
+
+          <!-- <div class="form-body" formArrayName="projetoResponsaveis">
+
+            <div class="row" *ngFor="let item of projetoResponsaveis().controls; let i = index;" [formGroupName]="i">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="item.nome{{i}}">Nome</label>
+                  <input type="text" class="form-control" formControlName="nome" id="item.nome{{i}}">
+                </div>
+              </div>
+
+              <div class="col-md-3">
+
+                <div class="form-group">
+                  <label for="item.cargo{{i}}">Cargo</label>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" style="margin-right: 20px;" formControlName="cargo"
+                           id="item.cargo{{i}}">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-danger mr-0" type="button" (click)="excluirProjetoResponsavel(i)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="row" style="margin-bottom: 20px">
+              <div class="col-lg-2 col-md-4">
+                <button type="button" class="btn btn-block btn-outline-secondary" (click)="novoProjetoResponsavel()">Novo Responsável do Projeto</button>
+              </div>
+            </div>
+
+          </div> -->
+
+        </form>
+
+
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="projetoFormGroup!.get('id')!.value"
+                      class="btn btn-danger">Excluir
+              </button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/projeto" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
