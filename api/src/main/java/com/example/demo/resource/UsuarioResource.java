@@ -1,6 +1,6 @@
 package com.example.demo.resource;
 
-import com.example.demo.model.Loja;
+import com.example.demo.model.Empresa;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.UsuarioService;
@@ -45,7 +45,7 @@ public class UsuarioResource {
 
 //        usuarioService.validacoes(usuario);
 
-        usuario.setLojaLogada(usuarioService.usuarioLogado().getLojaLogada());
+        usuario.setEmpresaLogada(usuarioService.usuarioLogado().getEmpresaLogada());
         return ResponseEntity.ok(usuarioRepository.save(usuario));
     }
 
@@ -67,11 +67,11 @@ public class UsuarioResource {
     }
 
     @CrossOrigin
-    @PutMapping(value = "/{id}/loja")
-    private ResponseEntity<Usuario> alterarLoja(@RequestBody Loja loja, @PathVariable Long id) {
+    @PutMapping(value = "/{id}/empresa")
+    private ResponseEntity<Usuario> alterarEmpresa(@RequestBody Empresa empresa, @PathVariable Long id) {
 
         Usuario usuario = usuarioRepository.findById(id).get();
-        usuario.setLojaLogada(loja);
+        usuario.setEmpresaLogada(empresa);
         return ResponseEntity.ok(usuarioRepository.save(usuario));
     }
 

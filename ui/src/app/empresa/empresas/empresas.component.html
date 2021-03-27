@@ -5,15 +5,15 @@
 
 
       <div class="card-body">
-        <h4 class="card-title">Consultar Loja</h4>
+        <h4 class="card-title">Consultar Empresa</h4>
       </div>
       <hr class="m-t-0">
 
       <div class="card-body">
         <div class="d-flex mb-3">
-          <input type="text" class="form-control w-25" placeholder="Pesquisar loja ..." [(ngModel)]="pesquisa"
+          <input type="text" class="form-control w-25" placeholder="Pesquisar empresa ..." [(ngModel)]="pesquisa"
                  (keyup)="pesquisar()">
-          <button class="btn btn-primary ml-auto" routerLink="/loja/novo">Nova Loja</button>
+          <button class="btn btn-primary ml-auto" routerLink="/empresa/novo">Nova Empresa</button>
         </div>
         <div class="table-responsive table-bordered">
 
@@ -29,9 +29,9 @@
             [offset]="dataTable.pageNumber"
             [limit]="dataTable.size"
             (page)="setPage($event)"
-            [messages]="{emptyMessage:'Loja não encontrada'}"
+            [messages]="{emptyMessage:'Empresa não encontrada'}"
             [selectionType]="'single'"
-            (select)='selecionarLoja($event)'
+            (select)='selecionarEmpresa($event)'
           >
 
             <ngx-datatable-column name="#" [flexGrow]="1" [prop]="'id'">
@@ -40,7 +40,7 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Loja" [flexGrow]="5" [prop]="'nome'">
+            <ngx-datatable-column name="Empresa" [flexGrow]="5" [prop]="'nome'">
               <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                 {{ value }}
               </ng-template>

@@ -1,18 +1,14 @@
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import {
-  NgbModal,
-  ModalDismissReasons,
-  NgbPanelChangeEvent,
-  NgbCarouselConfig
-} from '@ng-bootstrap/ng-bootstrap';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import {UsuarioService} from '../../service/usuario.service';
-import {Subject} from 'rxjs';
-import {Loja} from '../../model/loja';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
-import {LojaService} from '../../service/loja.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Validador} from '../../core/validador';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
+import { Empresa } from '../../model/empresa';
+import { EmpresaService } from '../../service/empresa.service';
+import { UsuarioService } from '../../service/usuario.service';
+
 declare var $: any;
 
 @Component({
@@ -21,12 +17,12 @@ declare var $: any;
 })
 export class NavigationComponent implements AfterViewInit {
 
-  // NG SELECT LOJA
-  subjectLoja: Subject<string> = new Subject<string>();
-  lojas: Loja[] = [];
+  // NG SELECT EMPRESA
+  subjectEmpresa: Subject<string> = new Subject<string>();
+  empresas: Empresa[] = [];
 
-  lojaFormGroup: FormGroup = new FormGroup({
-    loja: new FormControl( null,Validators.required)
+  empresaFormGroup: FormGroup = new FormGroup({
+    empresa: new FormControl( null,Validators.required)
   });
 
   @Output() toggleSidebar = new EventEmitter<void>();
@@ -40,35 +36,35 @@ export class NavigationComponent implements AfterViewInit {
 
   constructor(private modalService: NgbModal,
               private usuarioService: UsuarioService,
-              private lojaService: LojaService) {
+              private empresaService: EmpresaService) {
 
     this.usuarioService.usuarioLogado().subscribe(usuarioLogado => {
 
       this.usuarioLogado = usuarioLogado;
     });
 
-    // LOJA
-    this.subjectLoja.pipe(
+    // EMPRESA
+    this.subjectEmpresa.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap(ret => {
-        return this.lojaService.consultarSelect(ret);
+        return this.empresaService.consultarSelect(ret);
       }),
     ).subscribe(dados => {
-      this.lojas = dados;
+      this.empresas = dados;
     });
-    this.subjectLoja.next('');
+    this.subjectEmpresa.next('');
 
   }
 
-  consultarLoja(term: any) {
+  consultarEmpresa(term: any) {
 
-    this.subjectLoja.next(term.term);
+    this.subjectEmpresa.next(term.term);
   }
 
-  trocarLoja(){
+  trocarEmpresa(){
 
-    this.usuarioService.alterarLoja(this.lojaFormGroup.value.loja,this.usuarioLogado).subscribe(value => {
+    this.usuarioService.alterarEmpresa(this.empresaFormGroup.value.empresa,this.usuarioLogado).subscribe(value => {
       window.location.reload();
     });
   }

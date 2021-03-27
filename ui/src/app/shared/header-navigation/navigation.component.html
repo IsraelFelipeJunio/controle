@@ -124,7 +124,7 @@
     <li class="nav-item dropdown" ngbDropdown>
         <a ngbDropdownToggle class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            <span class="d-none d-md-block">{{usuarioLogado?.lojaLogada?.nome}}
+            <span class="d-none d-md-block">{{usuarioLogado?.empresaLogada?.nome}}
                 <i class="fa fa-angle-down"></i>
             </span>
             <span class="d-block d-md-none">
@@ -132,7 +132,7 @@
             </span>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown" ngbDropdownMenu>
-            <a class="dropdown-item" href="javascript:void(0)" (click)="open1(content1)" ><i class="ti-home m-r-5 m-l-5"></i> Trocar de Loja</a>
+            <a class="dropdown-item" href="javascript:void(0)" (click)="open1(content1)" ><i class="ti-home m-r-5 m-l-5"></i> Trocar de Empresa</a>
 <!--            <a class="dropdown-item" href="#">Another action</a>-->
 <!--            <div class="dropdown-divider"></div>-->
 <!--            <a class="dropdown-item" href="#">Something else here</a>-->
@@ -292,7 +292,7 @@
                 </div>
             </div>
 <!--                <a class="dropdown-item" href="javascript:void(0)" (click)="open1(content1)">-->
-<!--                    <i class="ti-home m-r-5 m-l-5"></i> Trocar de Loja-->
+<!--                    <i class="ti-home m-r-5 m-l-5"></i> Trocar de Empresa-->
 <!--                </a>-->
 <!--            <a class="dropdown-item" href="javascript:void(0)">-->
 <!--                <i class="ti-user m-r-5 m-l-5"></i> My Profile</a>-->
@@ -321,35 +321,35 @@
 
 <ng-template #content1 let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Trocar de Loja</h4>
+    <h4 class="modal-title" id="modal-basic-title">Trocar de Empresa</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    <form  [formGroup]="lojaFormGroup">
+    <form  [formGroup]="empresaFormGroup">
       <div class="form-group">
-        <label>Selecione a loja que deseja trabalhar</label>
+        <label>Selecione a empresa que deseja trabalhar</label>
 
           <ng-select
-            placeholder="Informe uma Loja"
-            loadingText="Pesquisando Loja..."
+            placeholder="Informe uma Empresa"
+            loadingText="Pesquisando Empresa..."
             notFoundText="Nenhum registro encontrado."
             bindLabel="nome"
-            [items]="lojas"
-            (search)="consultarLoja($event)"
-            formControlName="loja"
+            [items]="empresas"
+            (search)="consultarEmpresa($event)"
+            formControlName="empresa"
           ></ng-select>
 
         <small class="form-text text-danger"
-               *ngIf="lojaFormGroup!.get('loja')!.invalid">
-          Loja obrigatória.
+               *ngIf="empresaFormGroup!.get('empresa')!.invalid">
+          Empresa obrigatória.
         </small>
 
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="trocarLoja()" [disabled]="lojaFormGroup.invalid" >Trocar</button>
+    <button type="button" class="btn btn-outline-dark" (click)="trocarEmpresa()" [disabled]="empresaFormGroup.invalid" >Trocar</button>
   </div>
 </ng-template>

@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.model.enuns.StatusProjeto;
+import com.example.demo.model.enuns.TipoPessoa;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,6 +11,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
@@ -33,7 +36,7 @@ public class Cliente {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "indicador_inscricao_estadual")
-    private IndicadorInscricaoEstadual indicadorInscricaoEstadual;
+    private StatusProjeto statusProjeto;
 
     @Column(name = "inscricao_estadual")
     private String inscricaoEstadual;

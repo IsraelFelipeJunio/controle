@@ -3,28 +3,28 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {Loja} from '../model/loja';
+import {Empresa} from '../model/empresa';
 import {DataTable} from '../model/data-table';
 
 @Injectable({providedIn: 'root'})
-export class LojaService {
+export class EmpresaService {
 
   constructor(private http: HttpClient) {
 
   }
 
-  salvar(loja: Loja) {
+  salvar(empresa: Empresa) {
 
-    if (loja.id == null) {
-      return this.http.post<any>(`${environment.apiUrl}/loja/`, loja)
+    if (empresa.id == null) {
+      return this.http.post<any>(`${environment.apiUrl}/empresa/`, empresa)
         .pipe(map(u => {
-            return loja;
+            return empresa;
           }
         ));
     } else {
-      return this.http.put<any>(`${environment.apiUrl}/loja/${loja.id}`, loja)
+      return this.http.put<any>(`${environment.apiUrl}/empresa/${empresa.id}`, empresa)
         .pipe(map(u => {
-            return loja;
+            return empresa;
           }
         ));
     }
@@ -32,7 +32,7 @@ export class LojaService {
 
   consultarDataTable(page: number, pesquisa: string): Observable<DataTable> {
 
-    return this.http.get<any>(`${environment.apiUrl}/loja/dataTable?pesquisa=${pesquisa}&page=${page}&pageSize=10`).pipe(map(dt => {
+    return this.http.get<any>(`${environment.apiUrl}/empresa/dataTable?pesquisa=${pesquisa}&page=${page}&pageSize=10`).pipe(map(dt => {
 
         const dataTable = new DataTable();
 
@@ -48,16 +48,16 @@ export class LojaService {
 
   consultarSelect(pesquisa: any): Observable<any> {
 
-    return this.http.get<any>(`${environment.apiUrl}/loja/select?pesquisa=${pesquisa}`);
+    return this.http.get<any>(`${environment.apiUrl}/empresa/select?pesquisa=${pesquisa}`);
   }
 
-  consultarPorId(id: any): Observable<Loja> {
+  consultarPorId(id: any): Observable<Empresa> {
 
-    return this.http.get<any>(`${environment.apiUrl}/loja/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/empresa/${id}`);
   }
 
   excluir(id: number): Observable<any> {
 
-    return this.http.delete<any>(`${environment.apiUrl}/loja/${id}`);
+    return this.http.delete<any>(`${environment.apiUrl}/empresa/${id}`);
   }
 }

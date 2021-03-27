@@ -39,8 +39,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [
       
       {
-        path: '/loja',
-        title: 'Lojas',
+        path: '/empresa',
+        title: 'Empresas',
         icon: 'mdi mdi-store',
         class: '',
         ddclass: '',

@@ -1,7 +1,6 @@
-package com.example.demo.model;
+package com.example.demo.model.enuns;
 
 public enum TipoPessoa {
-
     FISICA,
     JURIDICA
 }
