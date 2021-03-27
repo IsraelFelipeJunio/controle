@@ -19,8 +19,8 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: '/centro-custo',
-        title: 'Centros de Custos',
+        path: '/categoria',
+        title: 'Categorias',
         icon: 'mdi mdi-sitemap',
         class: '',
         ddclass: '',

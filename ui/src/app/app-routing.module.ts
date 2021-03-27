@@ -35,7 +35,7 @@ export const Approutes: Routes = [
 
 
       { path: 'cliente', loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule) , canActivate: [AuthGuard]},
-      { path: 'centro-custo', loadChildren: () => import('./centro-custo/centro-custo.module').then(m => m.CentroCustoModule) , canActivate: [AuthGuard]},
+      { path: 'categoria', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) , canActivate: [AuthGuard]},
       { path: 'loja', loadChildren: () => import('./loja/loja.module').then(m => m.LojaModule) , canActivate: [AuthGuard]},
       { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) , canActivate: [AuthGuard]},
 

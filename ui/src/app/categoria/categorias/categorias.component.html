@@ -5,15 +5,15 @@
 
 
       <div class="card-body">
-        <h4 class="card-title">Consultar Centro de Custo</h4>
+        <h4 class="card-title">Consultar Categoria</h4>
       </div>
       <hr class="m-t-0">
 
       <div class="card-body">
         <div class="d-flex mb-3">
-          <input type="text" class="form-control w-25" placeholder="Pesquisar Centro de Custo ..." [(ngModel)]="pesquisa"
+          <input type="text" class="form-control w-25" placeholder="Pesquisar Categoria ..." [(ngModel)]="pesquisa"
                  (keyup)="pesquisar()">
-          <button class="btn btn-primary ml-auto" routerLink="/centro-custo/novo">Novo Centro de Custo</button>
+          <button class="btn btn-primary ml-auto" routerLink="/categoria/novo">Nova Categoria</button>
         </div>
         <div class="table-responsive table-bordered">
 
@@ -29,9 +29,9 @@
             [offset]="dataTable.pageNumber"
             [limit]="dataTable.size"
             (page)="setPage($event)"
-            [messages]="{emptyMessage:'Centro de Custo não encontrado'}"
+            [messages]="{emptyMessage:'Categoria não encontrada'}"
             [selectionType]="'single'"
-            (select)='selecionarCentroCusto($event)'
+            (select)='selecionarCategoria($event)'
           >
 
             <ngx-datatable-column name="#" [flexGrow]="1" [prop]="'id'">
@@ -40,7 +40,7 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="Nome" [flexGrow]="5" [prop]="'nome'">
+            <ngx-datatable-column name="Descrição" [flexGrow]="5" [prop]="'descricao'">
               <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
                 {{ value }}
               </ng-template>
