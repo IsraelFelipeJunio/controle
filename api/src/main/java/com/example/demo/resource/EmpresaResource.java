@@ -26,7 +26,9 @@ public class EmpresaResource {
     }
 
     @GetMapping(value = "/dataTable")
-    public Page<Empresa> dataTable(@RequestParam(required = false) String pesquisa, @RequestParam int page, @RequestParam int pageSize) {
+    public Page<Empresa> dataTable(@RequestParam(required = false) String pesquisa,
+                                   @RequestParam int page,
+                                   @RequestParam int pageSize) {
 
         return empresaRepository.consultaDataTable(pesquisa, PageRequest.of(page, pageSize));
     }
@@ -37,6 +39,16 @@ public class EmpresaResource {
 
         return !empresaRepository.findByNomeContainingIgnoreCase(pesquisa).isEmpty() ?
                 ResponseEntity.ok(empresaRepository.findByNomeContainingIgnoreCase(pesquisa)) :
+                ResponseEntity.ok(new ArrayList<>());
+    }
+
+    @CrossOrigin
+    @GetMapping("/consultarEmpresaPai")
+    private ResponseEntity<List<Empresa>> select(@RequestParam String pesquisa,
+                                                 @RequestParam Long empresaId) {
+
+        return !empresaRepository.findByNomeContainingIgnoreCaseAndIdNot(pesquisa, empresaId).isEmpty() ?
+                ResponseEntity.ok(empresaRepository.findByNomeContainingIgnoreCaseAndIdNot(pesquisa, empresaId)) :
                 ResponseEntity.ok(new ArrayList<>());
     }
 

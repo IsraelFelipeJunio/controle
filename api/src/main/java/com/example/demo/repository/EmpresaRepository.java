@@ -23,4 +23,6 @@ public interface EmpresaRepository extends JpaRepository<Empresa,Long> {
 
     List<Empresa> findByNomeContainingIgnoreCase(String nome);
 
+    List<Empresa> findByNomeContainingIgnoreCaseAndIdNot(String nome, Long empresaId);
+
 }

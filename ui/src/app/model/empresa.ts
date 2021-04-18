@@ -1,26 +1,18 @@
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {TipoPessoa} from './tipo-pessoa';
-import {Validador} from '../core/validador';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+
+import { Validador } from '../core/validador';
+import { TipoPessoa } from './tipo-pessoa';
 
 export class Empresa {
 
   id: number | undefined;
   nome: string | undefined;
   tipoPessoa: TipoPessoa | undefined;
-
   cpf: string | undefined;
-
   cnpj: string | undefined;
   razaoSocial: string | undefined;
   dataFundacao: string | undefined;
-  optanteSimplesNacional: boolean | undefined;
-  vendeProduto: boolean | undefined;
-  vendeServico: boolean | undefined;
-  inscricaoMunicipal: string | undefined;
-  inscricaoEstadual: string | undefined;
-  isentoInscricaoEstadual: boolean | undefined;
-
   cep: string | undefined;
   endereco: string | undefined;
   numero: string | undefined;
@@ -34,13 +26,10 @@ export class Empresa {
   siafi: string | undefined;
   telefoneComercial: string | undefined;
   email: string | undefined;
+  empresaPai: Empresa | undefined;
 
   constructor() {
     this.tipoPessoa = TipoPessoa.JURIDICA;
-    this.vendeProduto = true;
-    this.vendeServico = true;
-    this.optanteSimplesNacional = true;
-    this.isentoInscricaoEstadual = true;
     this.dataFundacao = moment().format('YYYY-MM-DD');
   }
 
@@ -54,12 +43,6 @@ export class Empresa {
       cnpj: new FormControl(empresa.cnpj, Validador.cnpjObrigatorio()),
       razaoSocial: new FormControl(empresa.razaoSocial, [Validators.required]),
       dataFundacao: new FormControl(empresa.dataFundacao),
-      optanteSimplesNacional: new FormControl(empresa.optanteSimplesNacional),
-      vendeProduto: new FormControl(empresa.vendeProduto),
-      vendeServico: new FormControl(empresa.vendeServico),
-      inscricaoMunicipal: new FormControl(empresa.inscricaoMunicipal),
-      inscricaoEstadual: new FormControl(empresa.inscricaoEstadual),
-      isentoInscricaoEstadual: new FormControl(empresa.isentoInscricaoEstadual),
       cep: new FormControl(empresa.cep),
       endereco: new FormControl(empresa.endereco),
       numero: new FormControl(empresa.numero),
@@ -72,7 +55,8 @@ export class Empresa {
       ddd: new FormControl(empresa.ddd),
       siafi: new FormControl(empresa.siafi),
       telefoneComercial: new FormControl(empresa.telefoneComercial),
-      email: new FormControl(empresa.email, Validators.email)
+      email: new FormControl(empresa.email, Validators.email),
+      empresaPai: new FormControl(empresa.empresaPai)
     });
   }
 }

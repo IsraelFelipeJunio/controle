@@ -51,6 +51,13 @@ export class EmpresaService {
     return this.http.get<any>(`${environment.apiUrl}/empresa/select?pesquisa=${pesquisa}`);
   }
 
+  consultarEmpresaPai(pesquisa: any, empresaId: number): Observable<any> {
+    
+    return empresaId != null ?
+           this.http.get<any>(`${environment.apiUrl}/empresa/consultarEmpresaPai?pesquisa=${pesquisa}&empresaId=${empresaId}`) :
+           this.http.get<any>(`${environment.apiUrl}/empresa/select?pesquisa=${pesquisa}`);
+  }
+
   consultarPorId(id: any): Observable<Empresa> {
 
     return this.http.get<any>(`${environment.apiUrl}/empresa/${id}`);

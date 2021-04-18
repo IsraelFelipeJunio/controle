@@ -23,6 +23,10 @@ public class Empresa {
     @Column(name = "nome")
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "empresa_pai_id")
+    private Empresa empresaPai;
+
     // FISICA
     @Column(name = "cpf")
     private String cpf;
@@ -36,24 +40,6 @@ public class Empresa {
 
     @Column(name = "data_fundacao")
     private LocalDate dataFundacao;
-
-    @Column(name = "optante_simples_nacional")
-    private boolean optanteSimplesNacional;
-
-    @Column(name = "vende_produto")
-    private boolean vendeProduto;
-
-    @Column(name = "vende_servico")
-    private boolean vendeServico;
-
-    @Column(name = "inscricao_municipal")
-    private String inscricaoMunicipal;
-
-    @Column(name = "inscricao_estadual")
-    private String inscricaoEstadual;
-
-    @Column(name = "isento_inscricao_estadual")
-    private boolean isentoInscricaoEstadual;
 
     // ENDERECO E CONTATOS
     @Column(name = "cep")

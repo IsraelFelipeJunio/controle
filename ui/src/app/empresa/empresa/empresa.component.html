@@ -64,7 +64,6 @@
                 </div>
               </div>
 
-              <!-- JURÍDICA -->
               <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
                 <div class="form-group">
                   <label for="cnpj">CNPJ</label>
@@ -78,6 +77,13 @@
                          *ngIf="empresaFormGroup!.get('cnpj')!.touched && empresaFormGroup!.get('cnpj')!.getError('cnpjNull')">
                     CNPJ obrigatório.
                   </small>
+                </div>
+              </div>
+              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+                <div class="form-group">
+                  <label for="dataFundacao">Data de fundação</label>
+                  <input type="date" class="form-control" id="dataFundacao" name="dataFundacao"
+                         formControlName="dataFundacao">
                 </div>
               </div>
 
@@ -106,70 +112,21 @@
                 </div>
               </div>
 
-    
-
-              <div class="col-md-3" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+              <div class="col-md-12">
                 <div class="form-group">
-                  <label for="dataFundacao">Data de fundação</label>
-                  <input type="date" class="form-control" id="dataFundacao" name="dataFundacao"
-                         formControlName="dataFundacao">
-                </div>
-              </div>
+                  <label>Empresa Pai</label>
 
-              <div class="col-md-3" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
-                <div class="form-group">
-                  <label for="id">Optante pelo Simples Nacional? </label>
-                  <select class="form-control" formControlName="optanteSimplesNacional">
-                    <option [ngValue]="true">Sim</option>
-                    <option [ngValue]="false">Não</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-2" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
-                <div class="form-group">
-                  <label class="control-label" style="margin-bottom: 0px;">Minha empresa vende</label>
-                  <div class="custom-control custom-checkbox" style="margin-top: 5px;">
-                    <input type="checkbox" class="custom-control-input" id="vendeProduto" name="vendeProduto" formControlName="vendeProduto">
-                    <label for="vendeProduto" class="custom-control-label">Produto</label>
-                  </div>
-                  <div class="custom-control custom-checkbox" style="margin-top: 5px;">
-                    <input type="checkbox" class="custom-control-input" id="vendeServico" name="vendeServico" formControlName="vendeServico">
-                    <label for="vendeServico" class="custom-control-label">Serviço</label>
-                  </div>
-
-                  <small class="form-text text-danger"
-                         *ngIf="!empresaFormGroup.get('vendeServico').value && !empresaFormGroup.get('vendeProduto').value">
-                    Selecione ao menos uma opção
-                  </small>
-
-                </div>
-              </div>
-
-              <div class="col-md-3" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA' && empresaFormGroup.get('vendeServico')!.value">
-                <div class="form-group">
-                  <label for="inscricaoMunicipal">Inscrição municipal</label>
-                  <input type="text" class="form-control" id="inscricaoMunicipal" name="inscricaoMunicipal"
-                         formControlName="inscricaoMunicipal">
-                </div>
-              </div>
-
-              <div class="col-md-3" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA' && empresaFormGroup.get('vendeProduto')!.value">
-                <div class="form-group">
-                  <label for="inscricaoEstadual">Inscrição estadual</label>
-                  <input type="text" class="form-control" id="inscricaoEstadual" name="inscricaoEstadual"
-                         formControlName="inscricaoEstadual"
-                         [readOnly]="empresaFormGroup.get('isentoInscricaoEstadual').value">
-                </div>
-              </div>
-
-              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA' && empresaFormGroup.get('vendeProduto')!.value">
-                <div class="form-group">
-                  <label class="control-label"> &nbsp;</label>
-                  <div class="custom-control custom-checkbox" style="margin-top: 5px;">
-                    <input type="checkbox" class="custom-control-input" id="isentoInscricaoEstadual" name="isentoInscricaoEstadual" formControlName="isentoInscricaoEstadual">
-                    <label for="isentoInscricaoEstadual" class="custom-control-label">Empresa isenta de Inscrição Estadual</label>
-                  </div>
+                  <ng-select
+                    placeholder="Informe um Empresa Pai"
+                    loadingText="Pesquisando empresa..."
+                    notFoundText="Nenhum registro encontrado."
+                    bindLabel="nome"
+                    [items]="empresas"
+                    (search)="consultarEmpresas($event)"
+                    formControlName="empresaPai"
+                    [clearable]="false"
+                  >
+                  </ng-select>
                 </div>
               </div>
 

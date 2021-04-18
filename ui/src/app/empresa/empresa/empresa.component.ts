@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { Empresa } from '../../model/empresa';
 import { TipoPessoa } from '../../model/tipo-pessoa';
@@ -13,6 +15,10 @@ import { ViaCepService } from '../../service/via-cep.service';
   templateUrl: './empresa.component.html'
 })
 export class EmpresaComponent {
+
+  // NG SELECT EMPRESA PAI
+  subjectEmpresaPai: Subject<string> = new Subject<string>();
+  empresas: Empresa[] = [];
 
   empresaFormGroup: FormGroup = Empresa.criarFormulario(new Empresa());
 
@@ -30,6 +36,19 @@ export class EmpresaComponent {
         this.empresaFormGroup =  Empresa.criarFormulario(empresa);
       });
     }
+
+
+    // NG SELECT EMPRESA PAI
+    this.subjectEmpresaPai.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(ret => {
+        return this.empresaService.consultarEmpresaPai(ret, this.empresaFormGroup!.get('id')!.value);
+      }),
+    ).subscribe(dados => {
+      this.empresas = dados;
+    });
+    this.subjectEmpresaPai.next('');
    
   }
 
@@ -45,18 +64,12 @@ export class EmpresaComponent {
       this.empresaFormGroup!.get('cpf')!.updateValueAndValidity();
     }
 
-    if (!this.empresaFormGroup.get('vendeProduto').value && !this.empresaFormGroup.get('vendeServico').value ) {
-      this.toastrService.error('Favor preencher todos os campos obrigatórios.');
-      return;
-    }
-
-    if (this.empresaFormGroup.invalid) {
-      this.toastrService.error('Favor preencher todos os campos obrigatórios.');
-      return;
-    }
+    // if (this.empresaFormGroup.invalid) {
+    //   this.toastrService.error('Favor preencher todos os campos obrigatórios.');
+    //   return;
+    // }
 
     this.empresaService.salvar(this.empresaFormGroup.value).subscribe(c => {
-
       this.toastrService.success('Empresa Salva');
       this.router.navigate(['/empresa']);
     });
@@ -149,6 +162,10 @@ export class EmpresaComponent {
       this.empresaFormGroup!.get('ddd')!.setValue(value.ddd);
       this.empresaFormGroup!.get('siafi')!.setValue(value.siafi);
     })
+  }
+
+  consultarEmpresas(term: any) {
+    this.subjectEmpresaPai.next(term.term);
   }
 
 }
