@@ -41,6 +41,16 @@ public class ProjetoResource {
     }
 
     @CrossOrigin
+    @GetMapping("/consultarProjetoPai")
+    private ResponseEntity<List<Projeto>> select(@RequestParam String pesquisa,
+                                                 @RequestParam Long projetoId) {
+
+        return !projetoRepository.findByDescricaoContainingIgnoreCaseAndIdNot(pesquisa, projetoId).isEmpty() ?
+                ResponseEntity.ok(projetoRepository.findByDescricaoContainingIgnoreCaseAndIdNot(pesquisa, projetoId)) :
+                ResponseEntity.ok(new ArrayList<>());
+    }
+
+    @CrossOrigin
     @PostMapping
     private ResponseEntity<Projeto> novo(@RequestBody Projeto projeto) {
 

@@ -38,8 +38,8 @@ public class Projeto {
     @Column(name = "data_inicio")
     private LocalDate dataInicio;
 
-    @Column(name = "data_final")
-    private LocalDate dataFinal;
+    @Column(name = "data_fim")
+    private LocalDate dataFim;
 
     @ElementCollection
     @CollectionTable(name = "projeto_responsavel", joinColumns = {@JoinColumn(name = "projeto_id")})

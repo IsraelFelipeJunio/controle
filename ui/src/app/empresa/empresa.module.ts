@@ -26,5 +26,4 @@ import { EmpresasComponent } from './empresas/empresas.component';
   declarations: [EmpresasComponent, EmpresaComponent],
   providers: [TableService]
 })
-export class EmpresaModule {
-}
+export class EmpresaModule {}

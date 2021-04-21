@@ -1,11 +1,13 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Usuario;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
@@ -34,5 +36,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
     " ORDER BY u.nome ASC                                                                                               "
     )
     Page<Usuario> consultaDataTable2(@Param("pesquisa") String pesquisa,Pageable pageable);
+
+    List<Usuario> findByNomeContainingIgnoreCase(String nome);
 
 }

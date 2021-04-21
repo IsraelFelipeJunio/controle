@@ -10,6 +10,7 @@ import { TableService } from '../table/ngtable/ngtable.service';
 import { ProjetoRoutes } from './projeto.routing';
 import { ProjetoComponent } from './projeto/projeto.component';
 import { ProjetosComponent } from './projetos/projetos.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ProjetosComponent } from './projetos/projetos.component';
     NgbModule,
     FormsModule,
     ReactiveFormsModule,
+    NgSelectModule,
     NgxDatatableModule,
     NgxMaskModule.forRoot()
   ],

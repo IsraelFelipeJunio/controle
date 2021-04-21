@@ -50,6 +50,13 @@ export class ProjetoService {
         return this.http.get<any>(`${environment.apiUrl}/projeto/select?pesquisa=${pesquisa}`);
     }
 
+    consultarProjetoPai(pesquisa: any, projetoId: number): Observable<any> {
+    
+        return projetoId != null ?
+               this.http.get<any>(`${environment.apiUrl}/projeto/consultarProjetoPai?pesquisa=${pesquisa}&projetoId=${projetoId}`) :
+               this.http.get<any>(`${environment.apiUrl}/projeto/select?pesquisa=${pesquisa}`);
+    }
+
     consultarPorId(id: any): Observable<Projeto> {
 
         return this.http.get<any>(`${environment.apiUrl}/projeto/${id}`);

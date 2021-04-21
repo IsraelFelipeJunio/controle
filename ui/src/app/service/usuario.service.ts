@@ -107,4 +107,9 @@ export class UsuarioService {
     ));
   }
 
+  consultarSelect(pesquisa: any): Observable<any> {
+
+    return this.http.get<any>(`${environment.apiUrl}/usuario/select?pesquisa=${pesquisa}`);
+  }
+
 }

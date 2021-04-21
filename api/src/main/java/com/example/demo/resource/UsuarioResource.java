@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -107,6 +109,15 @@ public class UsuarioResource {
     @DeleteMapping(path = {"/{id}"})
     public void excluir(@PathVariable("id") Long id) throws Exception {
         usuarioRepository.deleteById(id);
+    }
+
+    @CrossOrigin
+    @GetMapping("/select")
+    private ResponseEntity<List<Usuario>> select(@RequestParam String pesquisa) {
+
+        return !usuarioRepository.findByNomeContainingIgnoreCase(pesquisa).isEmpty() ?
+                ResponseEntity.ok(usuarioRepository.findByNomeContainingIgnoreCase(pesquisa)) :
+                ResponseEntity.ok(new ArrayList<>());
     }
 
 }

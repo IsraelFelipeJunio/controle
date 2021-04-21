@@ -13,7 +13,7 @@ export class Projeto {
   projetoPai: Projeto | undefined;
   categoria: Categoria | undefined;
   dataInicio: Date | undefined;
-  dataFinal: Date | undefined;
+  dataFim: Date | undefined;
   projetoResponsaveis: ProjetoResponsavel [] | undefined;
 
   constructor() {
@@ -29,11 +29,10 @@ export class Projeto {
       andamento: new FormControl(projeto.andamento),
       statusProjeto: new FormControl(projeto.statusProjeto),
       projetoPai: new FormControl(projeto.projetoPai),
-      categoria: new FormControl(projeto.categoria),
-      // categoria: new FormControl(projeto.categoria, Validators.required),
+      categoria: new FormControl(projeto.categoria, Validators.required),
       dataInicio: new FormControl(projeto.dataInicio, Validators.required),
-      dataFinal: new FormControl(projeto.dataFinal, Validators.required),
-      // projetoResponsaveis: new FormArray(projeto!.projetoResponsaveis!.map(projetoResponsavel => ProjetoResponsavel.criarFormulario(projetoResponsavel)))
+      dataFim: new FormControl(projeto.dataFim, Validators.required),
+      projetoResponsaveis: new FormArray(projeto!.projetoResponsaveis!.map(projetoResponsavel => ProjetoResponsavel.criarFormulario(projetoResponsavel)))
     });
   }
   
