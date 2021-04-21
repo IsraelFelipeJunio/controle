@@ -6,7 +6,7 @@ export const LoginRoutes: Routes = [
     path: '',
     children: [
       {
-        path: 'login',
+        path: '',
         component: LoginComponent
       }
     ]
