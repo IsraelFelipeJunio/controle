@@ -1,0 +1,242 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Empresa</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+
+        <form [formGroup]="empresaFormGroup">
+
+          <h5 class="card-title">Dados do empresa</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+
+            <div class="row">
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="nome">Tipo</label>
+
+                  <select class="form-control" formControlName="tipoPessoa">
+                    <option [ngValue]="'FISICA'">Física</option>
+                    <option [ngValue]="'JURIDICA'">Jurídica</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='FISICA'">
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="text" class="form-control" id="cpf" name="cpf" formControlName="cpf" mask="000.000.000-00"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('cpf')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('cpf')!.getError('cpfNotValid')">
+                    CPF inválido.
+                  </small>
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('cpf')!.touched && empresaFormGroup!.get('cpf')!.getError('cpfNull')">
+                    CPF obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='FISICA'">
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input formControlName="nome" type="text" class="form-control" id="nome"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('nome')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('nome')!.touched && empresaFormGroup!.get('nome')!.invalid">
+                    Nome obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+                <div class="form-group">
+                  <label for="cnpj">CNPJ</label>
+                  <input type="text" class="form-control" id="cnpj" name="cnpj" formControlName="cnpj" mask="00.000.000/0000-00"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('cnpj')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('cnpj')!.getError('cnpjNotValid')">
+                    CNPJ inválido.
+                  </small>
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('cnpj')!.touched && empresaFormGroup!.get('cnpj')!.getError('cnpjNull')">
+                    CNPJ obrigatório.
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-4" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+                <div class="form-group">
+                  <label for="dataFundacao">Data de fundação</label>
+                  <input type="date" class="form-control" id="dataFundacao" name="dataFundacao"
+                         formControlName="dataFundacao">
+                </div>
+              </div>
+
+              <div class="col-md-6" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+                <div class="form-group">
+                  <label for="razaoSocial">Razão Social</label>
+                  <input type="text" class="form-control" id="razaoSocial" name="razaoSocial"
+                         formControlName="razaoSocial"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('razaoSocial')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('razaoSocial')!.touched && empresaFormGroup!.get('razaoSocial')!.invalid">
+                    Razão Social obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-6" *ngIf="empresaFormGroup.get('tipoPessoa')!.value=='JURIDICA'">
+                <div class="form-group">
+                  <label for="nome">Nome fantasia</label>
+                  <input formControlName="nome" type="text" class="form-control" id="nome"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('nome')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('nome')!.touched && empresaFormGroup!.get('nome')!.invalid">
+                    Nome fantasia obrigatório.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Empresa Pai</label>
+
+                  <ng-select
+                    placeholder="Informe um Empresa Pai"
+                    loadingText="Pesquisando empresa..."
+                    notFoundText="Nenhum registro encontrado."
+                    bindLabel="nome"
+                    [items]="empresas"
+                    (search)="consultarEmpresas($event)"
+                    formControlName="empresaPai"
+                    [clearable]="false"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <h5 class="card-title">Endereço e contatos</h5>
+          <hr class="m-t-0">
+
+          <div class="form-body">
+            <div class="row">
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cep">CEP</label>
+                  <input type="text" class="form-control" formControlName="cep" name="cep" id="cep" mask="00.000-000"
+                         (blur)="consultarCep()">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="endereco">Endereço</label>
+                  <input type="text" class="form-control" formControlName="endereco" name="endereco" id="endereco">
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="numero">Número</label>
+                  <input type="text" class="form-control" formControlName="numero" name="numero" id="numero">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="complemento">Complemento</label>
+                  <input type="text" class="form-control" formControlName="complemento" name="complemento"
+                         id="complemento">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="bairro">Bairro</label>
+                  <input type="text" class="form-control" formControlName="bairro" name="bairro" id="bairro">
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="cidade">Cidade</label>
+                  <input type="text" class="form-control" formControlName="cidade" name="cidade" id="cidade" readonly>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="telefoneComercial">Fone comercial</label>
+                  <input type="text" class="form-control" formControlName="telefoneComercial" name="telefoneComercial"
+                         mask="(00) 0000-0000||(00) 0 0000-0000"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('telefoneComercial')!.invalid"
+                         id="telefoneComercial">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('telefoneComercial')!.invalid">
+                    Fone comercial inválido.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <input type="text" class="form-control" formControlName="email" name="email" id="email"
+                         [class.ng-touched.ng-invalid]="empresaFormGroup!.get('email')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="empresaFormGroup!.get('email')!.getError('email')">
+                    E-mail inválido.
+                  </small>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+
+
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="empresaFormGroup!.get('id')!.value"
+                      class="btn btn-danger">Excluir
+              </button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/empresa" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

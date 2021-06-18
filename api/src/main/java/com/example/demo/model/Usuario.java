@@ -10,6 +10,7 @@ import java.util.Collection;
 
 @Data
 @Entity
+@Table(name = "usuario")
 public class Usuario implements UserDetails {
 
     @Id
@@ -20,8 +21,8 @@ public class Usuario implements UserDetails {
     private String senha ;
 
     @ManyToOne
-    @JoinColumn(name = "loja_logada_id")
-    private Loja lojaLogada;
+    @JoinColumn(name = "empresa_logada_id")
+    private Empresa empresaLogada;
 
     @Transient
     private String token;

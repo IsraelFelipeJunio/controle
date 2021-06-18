@@ -1,5 +1,6 @@
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Loja} from './loja';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { Empresa } from './empresa';
 
 export class Usuario {
 
@@ -7,7 +8,7 @@ export class Usuario {
     email: string | undefined;
     senha: string | undefined;
     nome: string | undefined;
-    lojaLogada: Loja | undefined;
+    empresaLogada: Empresa | undefined;
 
     constructor() {
 
@@ -21,7 +22,7 @@ export class Usuario {
       email: new FormControl(usuario.email, [Validators.required,Validators.email]),
       senha: new FormControl(usuario.senha, Validators.required),
       senhaRepetida: new FormControl(usuario.senha, Validators.required),
-      lojaLogada: new FormControl(usuario.lojaLogada)
+      empresaLogada: new FormControl(usuario.empresaLogada)
     });
   }
 }

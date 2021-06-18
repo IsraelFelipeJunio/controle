@@ -1,13 +1,13 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {environment} from '../../environments/environment';
-import {AutenticacaoService} from './autenticacao.service';
-import {Usuario} from '../model/usuario';
-import {Observable} from 'rxjs';
-import {Loja} from '../model/loja';
-import {DataTable} from '../model/data-table';
+import { environment } from '../../environments/environment';
+import { DataTable } from '../model/data-table';
+import { Empresa } from '../model/empresa';
+import { Usuario } from '../model/usuario';
+import { AutenticacaoService } from './autenticacao.service';
 
 @Injectable({providedIn: 'root'})
 export class UsuarioService {
@@ -53,9 +53,9 @@ export class UsuarioService {
       }));
   }
 
-  alterarLoja(loja: Loja, usuario: Usuario) {
+  alterarEmpresa(empresa: Empresa, usuario: Usuario) {
 
-    return this.http.put<any>(`${environment.apiUrl}/usuario/${usuario.id}/loja`, loja)
+    return this.http.put<any>(`${environment.apiUrl}/usuario/${usuario.id}/empresa`, empresa)
       .pipe(map(u => {
         return usuario;
       }));
@@ -105,6 +105,11 @@ export class UsuarioService {
         return dataTable;
       }
     ));
+  }
+
+  consultarSelect(pesquisa: any): Observable<any> {
+
+    return this.http.get<any>(`${environment.apiUrl}/usuario/select?pesquisa=${pesquisa}`);
   }
 
 }

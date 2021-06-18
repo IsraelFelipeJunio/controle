@@ -1,0 +1,87 @@
+<div class="row">
+  <div class="col-12">
+
+    <div class="card">
+
+
+      <div class="card-body">
+        <h4 class="card-title">Consultar Projeto</h4>
+      </div>
+      <hr class="m-t-0">
+
+      <div class="card-body">
+        <div class="d-flex mb-3">
+          <input type="text" class="form-control w-25" placeholder="Pesquisar projeto ..." [(ngModel)]="pesquisa"
+                 (keyup)="pesquisar()">
+          <button class="btn btn-primary ml-auto" routerLink="/projeto/novo">Novo Projeto</button>
+        </div>
+        <div class="table-responsive table-bordered">
+
+          <ngx-datatable
+            class="material"
+            [rows]="dataTable.rows"
+            [columnMode]="ColumnMode.flex"
+            [headerHeight]="50"
+            [footerHeight]="50"
+            rowHeight="auto"
+            [externalPaging]="true"
+            [count]="dataTable.totalElements"
+            [offset]="dataTable.pageNumber"
+            [limit]="dataTable.size"
+            (page)="setPage($event)"
+            [messages]="{emptyMessage:'Projeto não encontrado'}"
+            [selectionType]="'single'"
+            (select)='selecionarProjeto($event)'
+          >
+
+            <ngx-datatable-column name="#" [flexGrow]="0.7" [prop]="'id'">
+              <ng-template let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Descrição" [flexGrow]="3" [prop]="'descricao'">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Andamento" [flexGrow]="1.0" [prop]="'andamento'">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }} %
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Data Início" [flexGrow]="1.2" [prop]="'dataInicio'">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value | date: 'dd/MM/yyyy' }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Data Final" [flexGrow]="1.2" [prop]="'dataFinal'">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value | date: 'dd/MM/yyyy' }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Status" [flexGrow]="1.4" [prop]="'statusProjeto'">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <!-- <ngx-datatable-column name="CNPJ/CPF" [flexGrow]="5" [prop]="''">
+              <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                {{ value.tipoPessoa == 'FISICA'? (value.cpf | mask: '000.000.000-00'): (value.cnpj | mask: '00.000.000/0000-00')}}
+              </ng-template>
+            </ngx-datatable-column> -->
+
+          </ngx-datatable>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+

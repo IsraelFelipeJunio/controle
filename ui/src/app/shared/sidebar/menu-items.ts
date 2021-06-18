@@ -10,8 +10,8 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: '/cliente',
-        title: 'Clientes',
+        path: '/projeto',
+        title: 'Projetos',
         icon: 'mdi mdi-account-multiple',
         class: '',
         ddclass: '',
@@ -19,14 +19,14 @@ export const ROUTES: RouteInfo[] = [
         submenu: []
       },
       {
-        path: '/centro-custo',
-        title: 'Centros de Custos',
+        path: '/categoria',
+        title: 'Categorias',
         icon: 'mdi mdi-sitemap',
         class: '',
         ddclass: '',
         extralink: false,
         submenu: []
-      },
+      }
     ]
   },
   {
@@ -39,8 +39,8 @@ export const ROUTES: RouteInfo[] = [
     submenu: [
       
       {
-        path: '/loja',
-        title: 'Lojas',
+        path: '/empresa',
+        title: 'Empresas',
         icon: 'mdi mdi-store',
         class: '',
         ddclass: '',
