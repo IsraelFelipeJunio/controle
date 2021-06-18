@@ -1,14 +1,14 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Categoria } from './categoria';
-import { StatusProjeto } from './status-projeto';
 import { ProjetoResponsavel } from './projeto-responsavel';
+import { StatusProjeto } from './status-projeto';
 
 export class Projeto {
 
   id: number | undefined;
   descricao: string | undefined;
-  andamento: number | 0; // Disabled
+  andamento: number | 0;
   statusProjeto: StatusProjeto | undefined;
   projetoPai: Projeto | undefined;
   categoria: Categoria | undefined;

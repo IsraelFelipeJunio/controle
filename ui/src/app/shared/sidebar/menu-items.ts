@@ -26,7 +26,7 @@ export const ROUTES: RouteInfo[] = [
         ddclass: '',
         extralink: false,
         submenu: []
-      },
+      }
     ]
   },
   {

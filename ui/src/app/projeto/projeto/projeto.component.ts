@@ -12,6 +12,10 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Categoria } from '../../model/categoria';
 import { Usuario } from '../../model/usuario';
 import { UsuarioService } from '../../service/usuario.service';
+import { ProjetoFaseService } from '../../service/projeto-fase.service';
+import { ProjetoFase } from 'src/app/model/projeto-fase';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { ProjetoFaseResponsavel } from '../../model/projeto-fase-responsavel';
 
 @Component({
   selector: 'app-projeto',
@@ -31,14 +35,23 @@ export class ProjetoComponent {
   subjectUsuario: Subject<string> = new Subject<string>();
   usuarios: Usuario[] = [];
   
+  // PROJETO FASE
+  projetoFases: ProjetoFase[] = [];
+  projetoFase: ProjetoFase = new ProjetoFase();
+
+  closeResult: string = '';
   projetoFormGroup: FormGroup = new Projeto().criarFormulario(new Projeto());
+  projetoFaseFormGroup: FormGroup = new ProjetoFase().criarFormulario(new ProjetoFase());
+
 
   constructor(private activatedRoute: ActivatedRoute,
               private toastrService: ToastrService,
               private router: Router,
               private projetoService: ProjetoService,
+              private projetoFaseService: ProjetoFaseService,
               private categoriaService: CategoriaService,
-              private usuarioService: UsuarioService
+              private usuarioService: UsuarioService,
+              private modalService: NgbModal
   ) {
 
     if (this.activatedRoute.snapshot.paramMap.get('id') !== 'novo') {
@@ -50,6 +63,9 @@ export class ProjetoComponent {
         if (projeto!.projetoResponsaveis!.length == 0) {
           this.adicionarProjetoResponsavel();
         }
+
+        // Verifica Fases
+        this.listarFases();
       });
 
     } else {
@@ -95,16 +111,7 @@ export class ProjetoComponent {
   }
 
   salvar() {
-
-    // if (this.projetoFormGroup.invalid) {
-    //   this.toastrService.error('Favor preencher todos os campos obrigatórios.');
-    //   return;
-    // }
-
-    // this.excluirProjetoResponsaveisEmBranco();
-
     this.projetoService.salvar(this.projetoFormGroup.value).subscribe(c => {
-
       this.toastrService.success('Projeto Salvo');
       this.router.navigate(['/projeto']);
     });
@@ -112,51 +119,11 @@ export class ProjetoComponent {
   }
 
   excluir() {
-
     this.projetoService.excluir(this.projetoFormGroup.value.id).subscribe(c => {
-
       this.toastrService.success('Projeto Excluído');
       this.router.navigate(['/projeto']);
     });
   }
-
-  // projetoResponsaveis(): FormArray {
-
-  //   return this.projetoFormGroup.get('projetoResponsaveis') as FormArray;
-  // }
-
-  // novoProjetoResponsavel() {
-
-  //   const control = <FormArray>this.projetoFormGroup.controls['projetoResponsaveis'];
-  //   control.push(ProjetoResponsavel.criarFormulario(new ProjetoResponsavel()));
-  // }
-
-  // excluirProjetoResponsaveisEmBranco() {
-
-  //   const control = <FormArray>this.projetoFormGroup.controls['projetoResponsaveis'];
-
-  //   let listExcluir: Array<any> = [];
-
-  //   control.controls.forEach((value, index) => {
-
-  //     if (value.value.descricao == null || value.value.descricao == '') {
-
-  //       listExcluir.push(value);
-  //     }
-  //   });
-
-  //   listExcluir.forEach(value => {
-
-  //     control.controls.forEach((item, index) => {
-
-  //       if (item === value) {
-  //         control.removeAt(index);
-  //       }
-  //     });
-
-  //   });
-  //   control.updateValueAndValidity();
-  // }
 
   consultarProjetos(term: any) {
     this.subjectProjeto.next(term.term);
@@ -167,24 +134,93 @@ export class ProjetoComponent {
   }
 
   consultarUsuarios(term: any) {
-
     this.subjectUsuario.next(term.term);
   }
 
   projetoResponsaveisFormArray(): FormArray {
-
     return this.projetoFormGroup.get('projetoResponsaveis') as FormArray;
   }
 
   adicionarProjetoResponsavel() {
-
-    const control = (<FormArray>this.projetoFormGroup.controls['projetoResponsaveis']).push(ProjetoResponsavel.criarFormulario(new ProjetoResponsavel()));
-    console.log(control);
+    (<FormArray>this.projetoFormGroup.controls['projetoResponsaveis']).push(ProjetoResponsavel.criarFormulario(new ProjetoResponsavel()));
   }
 
   excluirProjetoResponsavel(index: any) {
+    (<FormArray>this.projetoFormGroup.controls['projetoResponsaveis']).removeAt(index);
+  }
 
-    const control = (<FormArray>this.projetoFormGroup.controls['projetoResponsaveis']).removeAt(index);
+  /* ------------------------------------------------- FASES DO PROJETOS ------------------------------------------------- */
+  editarFaseProjeto(projetoFase: ProjetoFase, content1:string) {
+    this.projetoFaseFormGroup = new ProjetoFase().criarFormulario(projetoFase);
+    if (projetoFase!.projetoFaseResponsaveis!.length == 0) {
+      this.adicionarFaseProjetoResponsavel();
+    }
+    
+    this.modalService.open(content1, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+		});
+  }
+
+  excluirFaseProjeto(index: any) {
+    this.projetoFases.splice(index);
   }
   
+  adicionarFaseProjeto(content1:string) {
+    this.projetoFaseFormGroup = new ProjetoFase().criarFormulario(new ProjetoFase());
+    this.projetoFaseFormGroup!.get('codigo').setValue(this.projetoFases.length + 1);
+    this.adicionarFaseProjetoResponsavel();
+
+    this.modalService.open(content1, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+		});
+  }
+
+  private getDismissReason(reason: ModalDismissReasons): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return  `with: ${reason}`;
+		}
+	}
+
+  atualizarFaseProjeto(projetoFaseFormGroup) {
+    const projetoFase = projetoFaseFormGroup.value;
+    if (projetoFase.id == null) {
+      projetoFase.projeto = this.projetoFormGroup.value;
+    }
+
+    this.projetoFaseService.salvar(projetoFase)
+      .subscribe(() => {
+        this.listarFases();
+        this.modalService.dismissAll();
+      });
+  }
+
+  listarFases() {
+    this.projetoFaseService.consultarPorProjeto(this.activatedRoute.snapshot.paramMap.get('id'))
+      .subscribe(dados => {
+        this.projetoFases = dados;
+        this.projetoFases.sort((a, b) => a.codigo - b.codigo);
+      });
+  }
+
+  projetoFaseResponsaveisFormArray(): FormArray {
+    return this.projetoFaseFormGroup.get('projetoFaseResponsaveis') as FormArray;
+  }
+
+  adicionarFaseProjetoResponsavel() {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseResponsaveis']).push(ProjetoFaseResponsavel.criarFormulario(new ProjetoFaseResponsavel()));
+  }
+
+  excluirFaseProjetoResponsavel(index: any) {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseResponsaveis']).removeAt(index);
+  }
+  /* ------------------------------------------------- FASES DO PROJETOS ------------------------------------------------- */
+
 }

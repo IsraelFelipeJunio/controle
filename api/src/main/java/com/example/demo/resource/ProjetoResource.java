@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/projeto")
@@ -18,6 +17,7 @@ public class ProjetoResource {
 
     @Autowired
     private ProjetoRepository projetoRepository;
+
 
     @GetMapping
     public List<Projeto> listar() {
@@ -66,9 +66,9 @@ public class ProjetoResource {
     }
 
     @GetMapping(value = "/{id}")
-    public Optional<Projeto> consultarPorId(@PathVariable Long id) {
+    public Projeto consultarPorId(@PathVariable Long id) {
 
-        return projetoRepository.findById(id);
+        return projetoRepository.findByIdOrderByIdDesc(id);
     }
 
     @DeleteMapping(path = {"/{id}"})
