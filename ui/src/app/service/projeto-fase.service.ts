@@ -50,6 +50,13 @@ export class ProjetoFaseService {
         return this.http.get<any>(`${environment.apiUrl}/projetoFase/select?pesquisa=${pesquisa}`);
     }
 
+    consultarSelectPorProjeto(pesquisa: any, projetoId: number): Observable<any> {
+    
+        return projetoId != null ?
+               this.http.get<any>(`${environment.apiUrl}/projetoFase/consultarFasePorProjeto?pesquisa=${pesquisa}&projetoId=${projetoId}`) :
+               this.http.get<any>(`${environment.apiUrl}/projetoFase/select?pesquisa=${pesquisa}`);
+    }
+
     consultarPorId(id: any): Observable<ProjetoFase> {
 
         return this.http.get<any>(`${environment.apiUrl}/projetoFase/${id}`);

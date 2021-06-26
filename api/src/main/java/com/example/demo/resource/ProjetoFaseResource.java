@@ -42,12 +42,12 @@ public class ProjetoFaseResource {
     }
 
     @CrossOrigin
-    @GetMapping("/consultarProjetoPai")
+    @GetMapping("/consultarFasePorProjeto")
     private ResponseEntity<List<ProjetoFase>> select(@RequestParam String pesquisa,
-                                                 @RequestParam Long projetoId) {
+                                                     @RequestParam Long projetoId) {
 
-        return !projetoFaseRepository.findByDescricaoContainingIgnoreCaseAndIdNot(pesquisa, projetoId).isEmpty() ?
-                ResponseEntity.ok(projetoFaseRepository.findByDescricaoContainingIgnoreCaseAndIdNot(pesquisa, projetoId)) :
+        return !projetoFaseRepository.findByDescricaoContainingIgnoreCaseAndProjetoIdOrderByCodigo(pesquisa, projetoId).isEmpty() ?
+                ResponseEntity.ok(projetoFaseRepository.findByDescricaoContainingIgnoreCaseAndProjetoIdOrderByCodigo(pesquisa, projetoId)) :
                 ResponseEntity.ok(new ArrayList<>());
     }
 
@@ -61,8 +61,8 @@ public class ProjetoFaseResource {
     @CrossOrigin
     @PutMapping(value = "/{id}")
     private ResponseEntity<ProjetoFase> alterar(@RequestBody ProjetoFase projetoFase, @PathVariable Long id) {
-
         projetoFase.setId(id);
+        if (projetoFase.getStatusFase() == null) projetoFase.setStatusFase(StatusFase.AGUARDANDO_INICIO);
         return ResponseEntity.ok(projetoFaseRepository.save(projetoFase));
     }
 
