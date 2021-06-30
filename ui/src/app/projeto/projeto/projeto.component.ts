@@ -19,6 +19,12 @@ import { ProjetoFaseResponsavel } from '../../model/projeto-fase-responsavel';
 import { ProjetoAtaReuniao } from '../../model/projeto-ata-reuniao';
 import { ProjetoAtaReuniaoService } from '../../service/projeto-ata-reuniao.service';
 import { ProjetoAtaReuniaoParticipante } from '../../model/projeto-ata-reuniao-participante';
+import { ProjetoFaseRecurso } from '../../model/projeto-fase-recurso';
+import { Recurso } from '../../model/recurso';
+import { RecursoService } from '../../service/recurso.service';
+import { ProjetoFaseTarefa } from '../../model/projeto-fase-tarefa';
+import { Tarefa } from '../../model/tarefa';
+import { TarefaService } from '../../service/tarefa.service';
 
 @Component({
   selector: 'app-projeto',
@@ -50,6 +56,14 @@ export class ProjetoComponent {
   subjectProjetoFase: Subject<string> = new Subject<string>();
   projetoFasesConsulta: ProjetoFase[] = [];
 
+  // NG SELECT RECURSO
+  subjectRecurso: Subject<string> = new Subject<string>();
+  recursos: Recurso[] = [];
+
+  // NG SELECT TAREFA
+  subjectTarefa: Subject<string> = new Subject<string>();
+  tarefas: Tarefa[] = [];
+
   closeResult: string = '';
   projetoFormGroup: FormGroup = new Projeto().criarFormulario(new Projeto());
   projetoFaseFormGroup: FormGroup = new ProjetoFase().criarFormulario(new ProjetoFase());
@@ -63,6 +77,8 @@ export class ProjetoComponent {
               private projetoAtaReuniaoService: ProjetoAtaReuniaoService,
               private categoriaService: CategoriaService,
               private usuarioService: UsuarioService,
+              private recursoService: RecursoService,
+              private tarefaService: TarefaService,
               private modalService: NgbModal
   ) {
 
@@ -134,6 +150,30 @@ export class ProjetoComponent {
       this.projetoFasesConsulta = dados;
     });
     this.subjectProjetoFase.next('');
+
+    // NG SELECT RECURSO
+    this.subjectRecurso.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(ret => {
+        return this.recursoService.consultarSelect(ret);
+      }),
+    ).subscribe(dados => {
+      this.recursos = dados;
+    });
+    this.subjectRecurso.next('');
+
+    // NG SELECT TAREFA
+    this.subjectTarefa.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(ret => {
+        return this.tarefaService.consultarSelect(ret);
+      }),
+    ).subscribe(dados => {
+      this.tarefas = dados;
+    });
+    this.subjectTarefa.next('');
   }
 
   salvar() {
@@ -166,6 +206,14 @@ export class ProjetoComponent {
     this.subjectProjetoFase.next(term.term);
   }
 
+  consultarRecursos(term: any) {
+    this.subjectRecurso.next(term.term);
+  }
+
+  consultarTarefas(term: any) {
+    this.subjectTarefa.next(term.term);
+  }
+
   projetoResponsaveisFormArray(): FormArray {
     return this.projetoFormGroup.get('projetoResponsaveis') as FormArray;
   }
@@ -193,6 +241,12 @@ export class ProjetoComponent {
     this.projetoFaseFormGroup = new ProjetoFase().criarFormulario(projetoFase);
     if (projetoFase!.projetoFaseResponsaveis!.length == 0) {
       this.adicionarFaseProjetoResponsavel();
+    }
+    if (projetoFase!.projetoFaseRecursos!.length == 0) {
+      this.adicionarFaseProjetoRecurso();
+    }
+    if (projetoFase!.projetoFaseTarefas!.length == 0) {
+      this.adicionarFaseProjetoTarefa();
     }
     
     this.modalService.open(modalFase, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
@@ -252,6 +306,30 @@ export class ProjetoComponent {
 
   excluirFaseProjetoResponsavel(index: any) {
     (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseResponsaveis']).removeAt(index);
+  }
+
+  projetoFaseRecursosFormArray(): FormArray {
+    return this.projetoFaseFormGroup.get('projetoFaseRecursos') as FormArray;
+  }
+
+  adicionarFaseProjetoRecurso() {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseRecursos']).push(ProjetoFaseRecurso.criarFormulario(new ProjetoFaseRecurso()));
+  }
+
+  excluirFaseProjetoRecurso(index: any) {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseRecursos']).removeAt(index);
+  }
+
+  projetoFaseTarefasFormArray(): FormArray {
+    return this.projetoFaseFormGroup.get('projetoFaseTarefas') as FormArray;
+  }
+
+  adicionarFaseProjetoTarefa() {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseTarefas']).push(ProjetoFaseTarefa.criarFormulario(new ProjetoFaseTarefa()));
+  }
+
+  excluirFaseProjetoTarefa(index: any) {
+    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseTarefas']).removeAt(index);
   }
   /* ------------------------------------------------- FASES DO PROJETO -------------------------------------------------- */
 

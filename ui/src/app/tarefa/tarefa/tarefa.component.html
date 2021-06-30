@@ -2,11 +2,11 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Cadastrar Categoria</h4>
+        <h4 class="card-title">Cadastrar Tarefa</h4>
       </div>
       <hr class="m-t-0">
       <div class="card-body">
-        <form [formGroup]="categoriaFormGroup">
+        <form [formGroup]="tarefaFormGroup">
           <div class="form-body">
             <div class="row">
               <div class="col-md-2">
@@ -18,9 +18,9 @@
               <div class="col-md-10">
                 <div class="form-group">
                   <label for="descricao">Descrição</label>
-                  <input formControlName="descricao" type="text" class="form-control" id="descricao" placeholder="Descrição" [class.ng-touched.ng-invalid]="categoriaFormGroup!.get('descricao')!.invalid">
+                  <input formControlName="descricao" type="text" class="form-control" id="descricao" placeholder="Descrição" [class.ng-touched.ng-invalid]="tarefaFormGroup!.get('descricao')!.invalid">
                   <small class="form-text text-danger"
-                         *ngIf="categoriaFormGroup!.get('descricao')!.touched && categoriaFormGroup!.get('descricao')!.invalid">
+                         *ngIf="tarefaFormGroup!.get('descricao')!.touched && tarefaFormGroup!.get('descricao')!.invalid">
                     Descrição obrigatória.
                   </small>
                 </div>
@@ -33,12 +33,12 @@
         <div class="d-flex no-block align-items-center">
           <div class="action-form">
             <div class="form-group m-b-0 text-center">
-              <button type="button" (click)="excluir()" *ngIf="categoriaFormGroup!.get('id')!.value" class="btn btn-danger">Excluir</button>
+              <button type="button" (click)="excluir()" *ngIf="tarefaFormGroup!.get('id')!.value" class="btn btn-danger">Excluir</button>
             </div>
           </div>
           <div class="ml-auto">
             <div class="btn-group">
-              <a routerLink="/categoria" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <a routerLink="/tarefa" style="padding-top: 14px; margin-right: 20px">voltar...</a>
               <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
             </div>
           </div>

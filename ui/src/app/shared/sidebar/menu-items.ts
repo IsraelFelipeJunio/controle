@@ -26,6 +26,33 @@ export const ROUTES: RouteInfo[] = [
         ddclass: '',
         extralink: false,
         submenu: []
+      },
+      {
+        path: '/unidade-medida',
+        title: 'Unidades de Medida',
+        icon: 'mdi mdi-sitemap',
+        class: '',
+        ddclass: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/recurso',
+        title: 'Recursos',
+        icon: 'mdi mdi-sitemap',
+        class: '',
+        ddclass: '',
+        extralink: false,
+        submenu: []
+      },
+      {
+        path: '/tarefa',
+        title: 'Tarefas',
+        icon: 'mdi mdi-sitemap',
+        class: '',
+        ddclass: '',
+        extralink: false,
+        submenu: []
       }
     ]
   },

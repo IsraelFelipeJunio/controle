@@ -35,6 +35,10 @@ export const Approutes: Routes = [
 
       { path: 'projeto', loadChildren: () => import('./projeto/projeto.module').then(m => m.ProjetoModule) , canActivate: [AuthGuard]},
       { path: 'categoria', loadChildren: () => import('./categoria/categoria.module').then(m => m.CategoriaModule) , canActivate: [AuthGuard]},
+      { path: 'unidade-medida', loadChildren: () => import('./unidade-medida/unidade-medida.module').then(m => m.UnidadeMedidaModule) , canActivate: [AuthGuard]},
+      { path: 'recurso', loadChildren: () => import('./recurso/recurso.module').then(m => m.RecursoModule) , canActivate: [AuthGuard]},
+      { path: 'tarefa', loadChildren: () => import('./tarefa/tarefa.module').then(m => m.TarefaModule) , canActivate: [AuthGuard]},
+      { path: 'empresa', loadChildren: () => import('./empresa/empresa.module').then(m => m.EmpresaModule) , canActivate: [AuthGuard]},
       { path: 'empresa', loadChildren: () => import('./empresa/empresa.module').then(m => m.EmpresaModule) , canActivate: [AuthGuard]},
       { path: 'usuario', loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule) , canActivate: [AuthGuard]},
 

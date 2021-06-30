@@ -1,0 +1,86 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Cadastrar Recurso</h4>
+      </div>
+      <hr class="m-t-0">
+      <div class="card-body">
+        <form [formGroup]="recursoFormGroup">
+          <div class="form-body">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label for="id">Código</label>
+                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                </div>
+              </div>
+              <div class="col-md-10">
+                <div class="form-group">
+                  <label for="descricao">Descrição</label>
+                  <input formControlName="descricao" type="text" class="form-control" id="descricao" placeholder="Descrição" [class.ng-touched.ng-invalid]="recursoFormGroup!.get('descricao')!.invalid">
+                  <small class="form-text text-danger"
+                         *ngIf="recursoFormGroup!.get('descricao')!.touched && recursoFormGroup!.get('descricao')!.invalid">
+                    Descrição obrigatória.
+                  </small>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="tipo">Tipo</label>
+                  <select class="form-control" formControlName="tipo">
+                    <option [ngValue]="'SERVICO'">SERVIÇO</option>
+                    <option [ngValue]="'PRODUTO'">PRODUTO</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="custo">Custo</label>
+                  <input type="number" class="form-control" id="custo" name="custo" formControlName="custo" currencyMask>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Unidade de Medida</label>
+                  <ng-select
+                    placeholder="Informe uma Unidade de Medida"
+                    loadingText="Pesquisando Unidade de Medida..."
+                    notFoundText="Nenhum registro encontrado."
+                    bindLabel="descricao"
+                    [items]="unidadeMedidas"
+                    (search)="consultarUnidadeMedidas($event)"
+                    formControlName="unidadeMedida"
+                    [clearable]="false"
+                  >
+                  </ng-select>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body bg-light">
+        <div class="d-flex no-block align-items-center">
+          <div class="action-form">
+            <div class="form-group m-b-0 text-center">
+              <button type="button" (click)="excluir()" *ngIf="recursoFormGroup!.get('id')!.value" class="btn btn-danger">Excluir</button>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <div class="btn-group">
+              <a routerLink="/recurso" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

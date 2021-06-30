@@ -47,4 +47,12 @@ public class ProjetoFase {
     @CollectionTable(name = "projeto_fase_responsavel", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
     private List<ProjetoFaseResponsavel> projetoFaseResponsaveis = new ArrayList<>();
 
+    @ElementCollection
+    @CollectionTable(name = "projeto_fase_recurso", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
+    private List<ProjetoFaseRecurso> projetoFaseRecursos = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "projeto_fase_tarefa", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
+    private List<ProjetoFaseTarefa> projetoFaseTarefas = new ArrayList<>();
+
 }
