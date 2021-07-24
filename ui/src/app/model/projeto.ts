@@ -14,6 +14,9 @@ export class Projeto {
   categoria: Categoria | undefined;
   dataInicio: Date | undefined;
   dataFim: Date | undefined;
+  gerarPrevisaoCusto: boolean | false;
+  custoPrevisto: number | 0;
+  custoExecutado: number | 0;
   projetoResponsaveis: ProjetoResponsavel [] | undefined;
 
   constructor() {
@@ -32,6 +35,9 @@ export class Projeto {
       categoria: new FormControl(projeto.categoria, Validators.required),
       dataInicio: new FormControl(projeto.dataInicio, Validators.required),
       dataFim: new FormControl(projeto.dataFim, Validators.required),
+      gerarPrevisaoCusto: new FormControl(projeto.gerarPrevisaoCusto),
+      custoPrevisto: new FormControl(projeto.custoPrevisto),
+      custoExecutado: new FormControl(projeto.custoExecutado),
       projetoResponsaveis: new FormArray(projeto!.projetoResponsaveis!.map(projetoResponsavel => ProjetoResponsavel.criarFormulario(projetoResponsavel)))
     });
   }

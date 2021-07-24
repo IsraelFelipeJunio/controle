@@ -4,6 +4,7 @@ import com.example.demo.model.enuns.StatusProjeto;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,15 @@ public class Projeto {
 
     @Column(name = "data_fim")
     private LocalDate dataFim;
+
+    @Column(name = "gerar_previsao_custo")
+    private boolean gerarPrevisaoCusto;
+
+    @Column(name = "custo_previsto")
+    private BigDecimal custoPrevisto;
+
+    @Column(name = "custo_executado")
+    private BigDecimal custoExecutado;
 
     @ElementCollection
     @CollectionTable(name = "projeto_responsavel", joinColumns = {@JoinColumn(name = "projeto_id")})

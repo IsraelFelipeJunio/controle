@@ -1,0 +1,1 @@
+ALTER TABLE projeto_fase_tarefa ADD COLUMN IF NOT EXISTS andamento DOUBLE PRECISION;

@@ -1,14 +1,18 @@
 package com.example.demo.resource;
 
 import com.example.demo.model.ProjetoFase;
+import com.example.demo.model.ProjetoFaseTarefa;
 import com.example.demo.model.enuns.StatusFase;
 import com.example.demo.repository.ProjetoFaseRepository;
+import com.example.demo.repository.ProjetoFaseTarefaRepository;
+import com.example.demo.service.ProjetoFaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +23,13 @@ public class ProjetoFaseResource {
 
     @Autowired
     private ProjetoFaseRepository projetoFaseRepository;
+
+    @Autowired
+    private ProjetoFaseService projetoFaseService;
+
+    @Autowired
+    private ProjetoFaseTarefaRepository projetoFaseTarefaRepository;
+
 
     @GetMapping
     public List<ProjetoFase> listar() {
@@ -55,7 +66,11 @@ public class ProjetoFaseResource {
     @PostMapping
     private ResponseEntity<ProjetoFase> novo(@RequestBody ProjetoFase projetoFase) {
         projetoFase.setStatusFase(StatusFase.AGUARDANDO_INICIO);
-        return ResponseEntity.ok(projetoFaseRepository.save(projetoFase));
+        if (projetoFase.getProjeto().isGerarPrevisaoCusto()) {
+            projetoFase.setCustoPrevisto(BigDecimal.ZERO);
+            projetoFase.setCustoExecutado(BigDecimal.ZERO);
+        }
+        return ResponseEntity.ok(projetoFaseService.salvar(projetoFase));
     }
 
     @CrossOrigin
@@ -63,7 +78,7 @@ public class ProjetoFaseResource {
     private ResponseEntity<ProjetoFase> alterar(@RequestBody ProjetoFase projetoFase, @PathVariable Long id) {
         projetoFase.setId(id);
         if (projetoFase.getStatusFase() == null) projetoFase.setStatusFase(StatusFase.AGUARDANDO_INICIO);
-        return ResponseEntity.ok(projetoFaseRepository.save(projetoFase));
+        return ResponseEntity.ok(projetoFaseService.salvar(projetoFase));
     }
 
     @GetMapping(value = "/{id}")
@@ -74,13 +89,11 @@ public class ProjetoFaseResource {
 
     @DeleteMapping(path = {"/{id}"})
     public void excluir(@PathVariable("id") Long id) {
-
-        projetoFaseRepository.deleteById(id);
+        projetoFaseService.excluir(id);
     }
 
     @GetMapping(value = "/consultarPorProjeto/{projetoId}")
     public List<ProjetoFase> consultarPorProjeto(@PathVariable Long projetoId) {
-
         return projetoFaseRepository.findByProjetoId(projetoId);
     }
 

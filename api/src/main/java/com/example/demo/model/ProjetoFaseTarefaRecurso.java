@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Embeddable
-public class ProjetoFaseRecurso {
+public class ProjetoFaseTarefaRecurso {
 
     @ManyToOne
     @JoinColumn(name = "recurso_id")

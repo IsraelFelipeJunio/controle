@@ -2,237 +2,269 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Cadastrar Projeto</h4>
-      </div>
-      <hr class="m-t-0">
-      <div class="card-body">
         <form [formGroup]="projetoFormGroup">
-          <h5 class="card-title">Dados do projeto</h5>
-          <hr class="m-t-0">
-          <div class="form-body">
-            <div class="row">
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label for="id">Código</label>
-                  <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+          <ngb-tabset #t="ngbTabset">
+            <ngb-tab title="Dados">
+              <ng-template ngbTabContent>
+                <div class="form-body p-t-20">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label for="id">Código</label>
+                        <input formControlName="id" type="text" class="form-control" id="id" placeholder="Código" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="form-group">
+                        <label for="descricao">Descrição</label>
+                        <input formControlName="descricao" type="text" class="form-control" id="descricao"
+                              [class.ng-touched.ng-invalid]="projetoFormGroup!.get('descricao')!.invalid">
+                        <small class="form-text text-danger"
+                              *ngIf="projetoFormGroup!.get('descricao')!.touched && projetoFormGroup!.get('descricao')!.invalid">
+                          Descrição obrigatória.
+                        </small>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="status">Status</label>
+                        <select class="form-control" formControlName="statusProjeto" disabled>
+                          <option [ngValue]="'PROBLEMA'">PROBLEMA</option>
+                          <option [ngValue]="'PRE_PROJETO'">PRÉ PROJETO</option>
+                          <option [ngValue]="'EM_ANDAMENTO'">EM ANDAMENTO</option>
+                          <option [ngValue]="'EM_ATRASO'">EM ATRASO</option>
+                          <option [ngValue]="'FINALIZADO'">FINALIZADO</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="andamento">Andamento (%)</label>
+                        <input type="text" class="form-control" readonly id="andamento" name="andamento" formControlName="andamento">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="dataInicio">Data Início</label>
+                        <input type="date" class="form-control" id="dataInicio" name="dataInicio" formControlName="dataInicio">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="dataFim">Data Final</label>
+                        <input type="date" class="form-control" id="dataFim" name="dataFim" formControlName="dataFim">
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group">
+                        <label for="gerarPrevisaoCusto">Gerar Previsão de Custo</label>
+                        <input type="checkbox" class="form-control" id="gerarPrevisaoCusto" name="gerarPrevisaoCusto" formControlName="gerarPrevisaoCusto">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="projetoFormGroup!.get('gerarPrevisaoCusto').value">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="custoPrevisto">Custo Previsto</label>
+                        <input type="number" class="form-control" id="custoPrevisto" name="custoPrevisto" formControlName="custoPrevisto" readonly>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="custoExecutado">Custo Executado</label>
+                        <input type="number" class="form-control" id="custoExecutado" name="custoExecutado" formControlName="custoExecutado" readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Projeto Pai</label>
+                        <ng-select
+                          placeholder="Informe um Projeto Pai"
+                          loadingText="Pesquisando projeto..."
+                          notFoundText="Nenhum registro encontrado."
+                          bindLabel="descricao"
+                          [items]="projetos"
+                          (search)="consultarProjetos($event)"
+                          formControlName="projetoPai"
+                          [clearable]="false"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label>Categoria</label>
+                        <ng-select
+                          placeholder="Informe um Categoria"
+                          loadingText="Pesquisando categoria..."
+                          notFoundText="Nenhum registro encontrado."
+                          bindLabel="descricao"
+                          [items]="categorias"
+                          (search)="consultarCategorias($event)"
+                          formControlName="categoria"
+                          [clearable]="false"
+                        >
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-7">
-                <div class="form-group">
-                  <label for="descricao">Descrição</label>
-                  <input formControlName="descricao" type="text" class="form-control" id="descricao"
-                         [class.ng-touched.ng-invalid]="projetoFormGroup!.get('descricao')!.invalid">
-                  <small class="form-text text-danger"
-                         *ngIf="projetoFormGroup!.get('descricao')!.touched && projetoFormGroup!.get('descricao')!.invalid">
-                    Descrição obrigatória.
-                  </small>
+                <!-- RESPONSÁVEIS -->
+                <div>
+                  <h5 class="card-title" style="padding-top: 20px">Responsáveis do Projeto</h5>
+                  <div class=" row">
+                    <div class="col-lg-12">
+                      <div class="table-responsive" style="overflow-x: visible !important;">
+                        <table class="table table-hover" formArrayName="projetoResponsaveis">
+                          <thead>
+                          <tr>
+                            <th style="width: 90%">Responsável</th>
+                            <th>Principal</th>
+                            <th></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of projetoResponsaveisFormArray().controls; let i = index;" [formGroupName]="i">
+                            <td style="padding: 0px">
+                              <ng-select
+                                placeholder="Informe um Usuário"
+                                loadingText="Pesquisando usuário..."
+                                notFoundText="Nenhum registro encontrado."
+                                bindLabel="nome"
+                                formControlName="usuario"
+                                [items]="usuarios"
+                                (search)="consultarUsuarios($event)"
+                              >
+                              </ng-select>
+                            </td>
+                            <td style="padding: 0px">
+                              <input type="checkbox" class="form-control" formControlName="principal">
+                            </td>
+                            <td style="text-align: center ; cursor: pointer; padding: 0px"
+                                (click)="excluirProjetoResponsavel(i)">
+                              <i style="padding-top: 10px" class="fa fa-times"></i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <button type="button" class="btn btn-info" (click)="adicionarProjetoResponsavel()"><i
+                        class="fa fa-plus"></i> Adicionar Responsável
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label for="status">Status</label>
-                  <select class="form-control" formControlName="statusProjeto">
-                    <option [ngValue]="'PROBLEMA'">PROBLEMA</option>
-                    <option [ngValue]="'PRE_PROJETO'">PRÉ PROJETO</option>
-                    <option [ngValue]="'EM_ANDAMENTO'">EM ANDAMENTO</option>
-                    <option [ngValue]="'EM_ATRASO'">EM ATRASO</option>
-                    <option [ngValue]="'FINALIZADO'">FINALIZADO</option>
-                  </select>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Fases">
+              <ng-template ngbTabContent>
+                <div class="form-body p-t-20" *ngIf="projetoFormGroup!.get('id').value">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="table-responsive" style="overflow-x: visible !important;">
+                        <table class="table">
+                          <thead>
+                          <tr>
+                            <th>Código</th>
+                            <th>Descrição</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of projetoFases; let i = index;">
+                            <td style="padding-left: 20px">{{item.codigo}}</td>
+                            <td>{{item.descricao}}</td>
+                            <td>{{item.statusFase}}</td>
+                            <td style="text-align: center ; cursor: pointer"
+                                (click)="editarFaseProjeto(item, modalFase)">
+                              <i class="fa fa-edit"></i>
+                            </td>
+                            <td style="text-align: center ; cursor: pointer"
+                                (click)="excluirFaseProjeto(i, item)">
+                              <i class="fa fa-times"></i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <button type="button" class="btn btn-info" (click)="adicionarFaseProjeto(modalFase)"><i
+                        class="fa fa-plus"></i> Adicionar Fase
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="andamento">Andamento (%)</label>
-                  <input type="text" class="form-control" readonly id="andamento" name="andamento" formControlName="andamento">
+                <!-- <hr class="m-t-0">
+                <ngb-accordion class="accordion-item" [closeOthers]="true" activeIds="fase-2" (click)="aqui(fase)">
+                  <ngb-panel *ngFor="let fase of projetoFases" id="fase-{{fase?.id}}" title={{fase.descricao}} >
+                    <ng-template ngbPanelContent>
+                      {{fase.andamento}}
+                    </ng-template>
+                  </ngb-panel>
+                </ngb-accordion> -->
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Atas">
+              <ng-template ngbTabContent>
+                <div class="form-body p-t-20" *ngIf="projetoFormGroup!.get('id').value">
+                  <div class=" row">
+                    <div class="col-lg-12">
+                      <div class="table-responsive" style="overflow-x: visible !important;">
+                        <table class="table">
+                          <thead>
+                          <tr>
+                            <th>Código</th>
+                            <th>Data</th>
+                            <th>Ata</th>
+                            <th>Fase</th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let item of projetoAtaReunioes; let i = index;">
+                            <td style="padding-left: 20px">{{item.codigo}}</td>
+                            <td >{{item.dataHora | date: 'dd/MM/yyyy HH:mm' }}</td>
+                            <td >{{item.ata}}</td>
+                            <td >{{item.projetoFase?.descricao}}</td>
+                            <td style="text-align: center ; cursor: pointer"
+                                (click)="editarAtaReuniaoProjeto(item, modalAtaReuniao)">
+                              <i class="fa fa-edit"></i>
+                            </td>
+                            <td style="text-align: center ; cursor: pointer"
+                                (click)="excluirAtaReuniaoProjeto(i, item)">
+                              <i class="fa fa-times"></i>
+                            </td>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <button type="button" class="btn btn-info" (click)="adicionarAtaReuniaoProjeto(modalAtaReuniao)"><i
+                        class="fa fa-plus"></i> Adicionar Ata Reunião
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="dataInicio">Data Início</label>
-                  <input type="date" class="form-control" id="dataInicio" name="dataInicio" formControlName="dataInicio">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label for="dataFim">Data Final</label>
-                  <input type="date" class="form-control" id="dataFim" name="dataFim" formControlName="dataFim">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Projeto Pai</label>
-                  <ng-select
-                    placeholder="Informe um Projeto Pai"
-                    loadingText="Pesquisando projeto..."
-                    notFoundText="Nenhum registro encontrado."
-                    bindLabel="descricao"
-                    [items]="projetos"
-                    (search)="consultarProjetos($event)"
-                    formControlName="projetoPai"
-                    [clearable]="false"
-                  >
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Categoria</label>
-                  <ng-select
-                    placeholder="Informe um Categoria"
-                    loadingText="Pesquisando categoria..."
-                    notFoundText="Nenhum registro encontrado."
-                    bindLabel="descricao"
-                    [items]="categorias"
-                    (search)="consultarCategorias($event)"
-                    formControlName="categoria"
-                    [clearable]="false"
-                  >
-                  </ng-select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- RESPONSÁVEIS -->
-          <h5 class="card-title" style="padding-top: 20px">Responsáveis do Projeto</h5>
-          <hr class="m-t-0">
-          <div class=" row">
-            <div class="col-lg-12">
-              <div class="table-responsive" style="overflow-x: visible !important;">
-                <table class="table" formArrayName="projetoResponsaveis">
-                  <thead class="bg-info text-white">
-                  <tr>
-                    <th style="width: 90%">Usuário Responsável</th>
-                    <th>Principal</th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody class="border border-primary">
-                  <tr *ngFor="let item of projetoResponsaveisFormArray().controls; let i = index;" [formGroupName]="i">
-                    <td style="padding: 0px">
-                      <ng-select
-                        placeholder="Informe um Usuário"
-                        loadingText="Pesquisando usuário..."
-                        notFoundText="Nenhum registro encontrado."
-                        bindLabel="nome"
-                        formControlName="usuario"
-                        [items]="usuarios"
-                        (search)="consultarUsuarios($event)"
-                      >
-                      </ng-select>
-                    </td>
-                    <td style="padding: 0px">
-                      <input type="checkbox" class="form-control" formControlName="principal">
-                    </td>
-                    <td style="text-align: center ; cursor: pointer; padding: 0px"
-                        (click)="excluirProjetoResponsavel(i)">
-                      <i style="padding-top: 10px" class="fa fa-times"></i>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <button type="button" class="btn btn-info" (click)="adicionarProjetoResponsavel()"><i
-                class="fa fa-plus"></i> Adicionar Responsável
-              </button>
-            </div>
-          </div>
-          <!-- FIM > RESPONSÁVEIS -->
-          <!-- FASES -->
-          <h5 class="card-title" style="padding-top: 35px">Fases do Projeto</h5>
-          <hr class="m-t-0">
-          <div class=" row">
-            <div class="col-lg-12">
-              <div class="table-responsive" style="overflow-x: visible !important;">
-                <table class="table">
-                  <thead class="bg-info text-white">
-                  <tr>
-                    <th>Cód.</th>
-                    <th>Descrição</th>
-                    <th>Status</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody class="border border-primary">
-                  <tr *ngFor="let item of projetoFases; let i = index;">
-                    <td style="padding: 0px; padding-left: 20px">{{item.codigo}}</td>
-                    <td style="padding: 0px">{{item.descricao}}</td>
-                    <td style="padding: 0px">{{item.statusFase}}</td>
-                    <td style="text-align: center ; cursor: pointer; padding: 0px"
-                        (click)="editarFaseProjeto(item, modalFase)">
-                      <i class="fa fa-edit"></i>
-                    </td>
-                    <td style="text-align: center ; cursor: pointer; padding: 0px"
-                        (click)="excluirFaseProjeto(i, item)">
-                      <i class="fa fa-times"></i>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <button type="button" class="btn btn-info" (click)="adicionarFaseProjeto(modalFase)"><i
-                class="fa fa-plus"></i> Adicionar Fase
-              </button>
-            </div>
-          </div>
-          <!-- FIM > FASES -->
-          <!-- ATAS DE REUNIÃO -->
-          <h5 class="card-title" style="padding-top: 35px">Atas de Reunião</h5>
-          <hr class="m-t-0">
-          <div class=" row">
-            <div class="col-lg-12">
-              <div class="table-responsive" style="overflow-x: visible !important;">
-                <table class="table">
-                  <thead class="bg-info text-white">
-                  <tr>
-                    <th>Cód.</th>
-                    <th>Data</th>
-                    <th>Ata</th>
-                    <th>Fase</th>
-                    <th></th>
-                    <th></th>
-                  </tr>
-                  </thead>
-                  <tbody class="border border-primary">
-                  <tr *ngFor="let item of projetoAtaReunioes; let i = index;">
-                    <td style="padding: 0px; padding-left: 20px">{{item.codigo}}</td>
-                    <td style="padding: 0px">{{item.dataHora | date: 'dd/MM/yyyy HH:mm' }}</td>
-                    <td style="padding: 0px">{{item.ata}}</td>
-                    <td style="padding: 0px">{{item.projetoFase?.descricao}}</td>
-                    <td style="text-align: center ; cursor: pointer; padding: 0px"
-                        (click)="editarAtaReuniaoProjeto(item, modalAtaReuniao)">
-                      <i class="fa fa-edit"></i>
-                    </td>
-                    <td style="text-align: center ; cursor: pointer; padding: 0px"
-                        (click)="excluirAtaReuniaoProjeto(i, item)">
-                      <i class="fa fa-times"></i>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12">
-              <button type="button" class="btn btn-info" (click)="adicionarAtaReuniaoProjeto(modalAtaReuniao)"><i
-                class="fa fa-plus"></i> Adicionar Ata Reunião
-              </button>
-            </div>
-          </div>
-          <!-- FIM > ATAS DE REUNIÃO -->
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
         </form>
       </div>
       <div class="card-body bg-light">
@@ -247,7 +279,8 @@
           <div class="ml-auto">
             <div class="btn-group">
               <a routerLink="/projeto" style="padding-top: 14px; margin-right: 20px">voltar...</a>
-              <button type="button" (click)="salvar()" class="btn btn-success">Salvar</button>
+              <button type="button" (click)="salvar()" [disabled]="projetoFormGroup.invalid" *ngIf="!projetoFormGroup!.get('id').value" class="btn btn-success">Salvar</button>
+              <button type="button" (click)="salvarFechar()" [disabled]="projetoFormGroup.invalid" *ngIf="projetoFormGroup!.get('id').value" class="btn btn-success">Salvar</button>
             </div>
           </div>
         </div>
@@ -290,7 +323,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label for="status">Status</label>
+                    <label for="status-2">Status</label>
                     <select class="form-control" formControlName="statusFase" disabled>
                       <option [ngValue]="'AGUARDANDO_INICIO'">AGUARDANDO INÍCIO</option>
                       <option [ngValue]="'EM_ANDAMENTO'">EM ANDAMENTO</option>
@@ -320,6 +353,20 @@
                   </div>
                 </div>
               </div>
+              <div class="row" *ngIf="projetoFormGroup!.get('gerarPrevisaoCusto').value">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="custoPrevisto-2">Custo Previsto</label>
+                    <input type="number" class="form-control" id="custoPrevisto-2" name="custoPrevisto-2" formControlName="custoPrevisto" readonly>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="custoExecutado-2">Custo Executado</label>
+                    <input type="number" class="form-control" id="custoExecutado-2" name="custoExecutado-2" formControlName="custoExecutado" readonly>
+                  </div>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-md-12">
                   <div class="form-group">
@@ -331,19 +378,18 @@
             </div>
             <!-- RESPONSÁVEIS DA FASE -->
             <h5 class="card-title" style="padding-top: 20px">Responsáveis da Fase</h5>
-            <hr class="m-t-0">
             <div class=" row">
               <div class="col-lg-12">
                 <div class="table-responsive" style="overflow-x: visible !important;">
                   <table class="table" formArrayName="projetoFaseResponsaveis">
-                    <thead class="bg-info text-white">
+                    <thead>
                     <tr>
                       <th style="width: 90%">Usuário Responsável</th>
                       <th>Principal</th>
                       <th></th>
                     </tr>
                     </thead>
-                    <tbody class="border border-primary">
+                    <tbody>
                     <tr *ngFor="let item of projetoFaseResponsaveisFormArray().controls; let i = index;" [formGroupName]="i">
                       <td style="padding: 0px">
                         <ng-select
@@ -377,14 +423,174 @@
                 </button>
               </div>
             </div>
+            <!-- TAREFAS DA FASE -->
+            <h5 class="card-title" style="padding-top: 40px">Tarefas da Fase</h5>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="table-responsive" style="overflow-x: visible !important;">
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th>Cód.</th>
+                      <th>Descrição</th>
+                      <th>Tarefa</th>
+                      <th>Responsável</th>
+                      <th>Data Início</th>
+                      <th>Data Fim</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of projetoFaseTarefas; let i = index;">
+                      <td >{{item.codigo}}</td>
+                      <td >{{item.descricao}}</td>
+                      <td >{{item.tarefa?.descricao}}</td>
+                      <td >{{item.usuarioResponsavel?.nome}}</td>
+                      <td >{{item.dataInicio | date: 'dd/MM/yyyy' }}</td>
+                      <td >{{item.dataFim | date: 'dd/MM/yyyy' }}</td>
+                      <td style="text-align: center ; cursor: pointer"
+                          (click)="editarFaseProjetoTarefa(item, modalTarefa)">
+                        <i class="fa fa-edit"></i>
+                      </td>
+                      <td style="text-align: center ; cursor: pointer"
+                          (click)="excluirFaseProjetoTarefa(i)">
+                        <i class="fa fa-times"></i>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <button type="button" class="btn btn-info" (click)="adicionarFaseProjetoTarefa(modalTarefa)"><i
+                  class="fa fa-plus"></i> Adicionar Tarefa
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="atualizarFaseProjeto(projetoFaseFormGroup)">Save</button>
+        </div>
+      </ng-template>
+		</div>
+	</div>
+</div>
+
+<!-- MODAL TAREFA E RECURSOS -->
+<div class="row">
+	<div class="col-md-6">
+		<div class="card">
+      <ng-template #modalTarefa let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Tarefa</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="projetoFaseTarefaFormGroup">
+            <div class="form-body">
+              <div class="row">
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="codigo">Código</label>
+                    <input formControlName="codigo" type="text" class="form-control" id="codigo" placeholder="Código" readonly>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <input formControlName="descricao" type="text" class="form-control" id="descricao"
+                           [class.ng-touched.ng-invalid]="projetoFaseTarefaFormGroup!.get('descricao')!.invalid">
+                    <small class="form-text text-danger"
+                           *ngIf="projetoFaseTarefaFormGroup!.get('descricao')!.touched && projetoFaseTarefaFormGroup!.get('descricao')!.invalid">
+                      Descrição obrigatória.
+                    </small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Dependência</label>
+                    <ng-select
+                      placeholder="Informe a Tarefa Dependente"
+                      loadingText="Pesquisando tarefa..."
+                      notFoundText="Nenhum registro encontrado."
+                      bindLabel="descricao"
+                      [items]="projetoFasesTarefaConsulta"
+                      (search)="consultarProjetoFaseTarefas($event)"
+                      formControlName="projetoFaseTarefaDependente"
+                      [clearable]="false"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Tarefa</label>
+                    <ng-select
+                      placeholder="Informe um Tarefa"
+                      loadingText="Pesquisando tarefa..."
+                      notFoundText="Nenhum registro encontrado."
+                      bindLabel="descricao"
+                      [items]="tarefas"
+                      (search)="consultarTarefas($event)"
+                      formControlName="tarefa"
+                      [clearable]="false"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Responsável</label>
+                    <ng-select
+                      placeholder="Informe um Responsável"
+                      loadingText="Pesquisando responsável..."
+                      notFoundText="Nenhum registro encontrado."
+                      bindLabel="nome"
+                      [items]="usuarios"
+                      (search)="consultarUsuarios($event)"
+                      formControlName="usuarioResponsavel"
+                      [clearable]="false"
+                    >
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="andamento-fp">Andamento (%)</label>
+                    <input type="text" class="form-control" readonly id="andamento-fp" name="andamento-fp" formControlName="andamento">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="dataInicio-fp">Data Início</label>
+                    <input type="date" class="form-control" id="dataInicio-fp" name="dataInicio-fp" formControlName="dataInicio">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="dataFim-fp">Data Final</label>
+                    <input type="date" class="form-control" id="dataFim-fp" name="dataFim-fp" formControlName="dataFim">
+                  </div>
+                </div>
+              </div>
+            </div>
             <!-- RECURSOS DA FASE -->
             <h5 class="card-title" style="padding-top: 20px">Recursos da Fase</h5>
             <hr class="m-t-0">
             <div class=" row">
               <div class="col-lg-12">
                 <div class="table-responsive" style="overflow-x: visible !important;">
-                  <table class="table" formArrayName="projetoFaseRecursos">
-                    <thead class="bg-info text-white">
+                  <table class="table" formArrayName="recursos">
+                    <thead>
                     <tr>
                       <th>Recurso</th>
                       <th>Descrição</th>
@@ -393,8 +599,8 @@
                       <th></th>
                     </tr>
                     </thead>
-                    <tbody class="border border-primary">
-                    <tr *ngFor="let item of projetoFaseRecursosFormArray().controls; let i = index;" [formGroupName]="i">
+                    <tbody>
+                    <tr *ngFor="let item of projetoFaseTarefaRecursosFormArray().controls; let i = index;" [formGroupName]="i">
                       <td style="padding: 0px">
                         <ng-select
                           placeholder="Informe um Recurso"
@@ -413,11 +619,11 @@
                       <td style="padding: 0px">
                         <input type="number" class="form-control" formControlName="quantidadeUnidade">
                       </td>
-                       <td style="padding: 0px">
+                      <td style="padding: 0px">
                         <input type="checkbox" class="form-control" formControlName="utilizado">
                       </td>
                       <td style="text-align: center ; cursor: pointer; padding: 0px"
-                          (click)="excluirFaseProjetoRecurso(i)">
+                          (click)="excluirFaseTarefaRecurso(i)">
                         <i style="padding-top: 10px" class="fa fa-times"></i>
                       </td>
                     </tr>
@@ -428,59 +634,15 @@
             </div>
             <div class="row">
               <div class="col-lg-12">
-                <button type="button" class="btn btn-info" (click)="adicionarFaseProjetoRecurso()"><i
+                <button type="button" class="btn btn-info" (click)="adicionarFaseTarefaRecurso()"><i
                   class="fa fa-plus"></i> Adicionar Recurso
-                </button>
-              </div>
-            </div>
-            <!-- TAREFAS DA FASE -->
-            <h5 class="card-title" style="padding-top: 20px">Tarefas da Fase</h5>
-            <hr class="m-t-0">
-            <div class=" row">
-              <div class="col-lg-12">
-                <div class="table-responsive" style="overflow-x: visible !important;">
-                  <table class="table" formArrayName="projetoFaseTarefas">
-                    <thead class="bg-info text-white">
-                    <tr>
-                      <th>Tarefa</th>
-                      <th></th>
-                    </tr>
-                    </thead>
-                    <tbody class="border border-primary">
-                    <tr *ngFor="let item of projetoFaseTarefasFormArray().controls; let i = index;" [formGroupName]="i">
-                      <td style="padding: 0px">
-                        <ng-select
-                          placeholder="Informe uma Tarefa"
-                          loadingText="Pesquisando tarefa..."
-                          notFoundText="Nenhum registro encontrado."
-                          bindLabel="descricao"
-                          formControlName="tarefa"
-                          [items]="tarefas"
-                          (search)="consultarTarefas($event)"
-                        >
-                        </ng-select>
-                      </td>
-                      <td style="text-align: center ; cursor: pointer; padding: 0px"
-                          (click)="excluirFaseProjetoTarefa(i)">
-                        <i style="padding-top: 10px" class="fa fa-times"></i>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <button type="button" class="btn btn-info" (click)="adicionarFaseProjetoTarefa()"><i
-                  class="fa fa-plus"></i> Adicionar Tarefa
                 </button>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-dark" (click)="atualizarFaseProjeto(projetoFaseFormGroup)">Save</button>
+          <button type="button" class="btn btn-outline-dark" (click)="atualizarFaseProjetoTarefa(projetoFaseTarefaFormGroup); modal.dismiss('Cross click')">Save</button>
         </div>
       </ng-template>
 		</div>
@@ -566,19 +728,18 @@
               </div>
             </div>
             <h5 class="card-title" style="padding-top: 20px">Participantes da Ata de Reunião</h5>
-            <hr class="m-t-0">
             <div class=" row">
               <div class="col-lg-12">
                 <div class="table-responsive" style="overflow-x: visible !important;">
                   <table class="table" formArrayName="projetoAtaReuniaoParticipantes">
-                    <thead class="bg-info text-white">
+                    <thead>
                     <tr>
                       <th style="width: 90%">Usuário Participante</th>
                       <th>Organizador</th>
                       <th></th>
                     </tr>
                     </thead>
-                    <tbody class="border border-primary">
+                    <tbody>
                     <tr *ngFor="let item of projetoAtaReuniaoParticipantesFormArray().controls; let i = index;" [formGroupName]="i">
                       <td style="padding: 0px">
                         <ng-select

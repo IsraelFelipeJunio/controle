@@ -1,10 +1,8 @@
-import { ProjetoFaseRecurso } from './projeto-fase-recurso';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Projeto } from './projeto';
 import { ProjetoFaseResponsavel } from './projeto-fase-responsavel';
 import { StatusFase } from './status-fase';
-import { ProjetoFaseTarefa } from './projeto-fase-tarefa';
 
 export class ProjetoFase {
 
@@ -17,14 +15,12 @@ export class ProjetoFase {
   andamento: number | 0;
   levantamentoRequisito: string | undefined;
   statusFase: StatusFase | undefined;
+  custoPrevisto: number | 0;
+  custoExecutado: number | 0;
   projetoFaseResponsaveis: ProjetoFaseResponsavel [] | undefined;
-  projetoFaseRecursos: ProjetoFaseRecurso [] | undefined;
-  projetoFaseTarefas: ProjetoFaseTarefa [] | undefined;
 
   constructor() {
     this.projetoFaseResponsaveis = [];
-    this.projetoFaseRecursos = [];
-    this.projetoFaseTarefas = [];
   }
 
   criarFormulario(projetoFase: ProjetoFase) {
@@ -39,9 +35,9 @@ export class ProjetoFase {
       andamento: new FormControl(projetoFase.andamento),
       levantamentoRequisito: new FormControl(projetoFase.levantamentoRequisito),
       statusFase: new FormControl(projetoFase.statusFase),
-      projetoFaseResponsaveis: new FormArray(projetoFase!.projetoFaseResponsaveis!.map(projetoFaseResponsavel => ProjetoFaseResponsavel.criarFormulario(projetoFaseResponsavel))),
-      projetoFaseRecursos: new FormArray(projetoFase!.projetoFaseRecursos!.map(projetoFaseRecurso => ProjetoFaseRecurso.criarFormulario(projetoFaseRecurso))),
-      projetoFaseTarefas: new FormArray(projetoFase!.projetoFaseTarefas!.map(projetoFaseTarefa => ProjetoFaseTarefa.criarFormulario(projetoFaseTarefa))),
+      custoPrevisto: new FormControl(projetoFase.custoPrevisto),
+      custoExecutado: new FormControl(projetoFase.custoExecutado),
+      projetoFaseResponsaveis: new FormArray(projetoFase!.projetoFaseResponsaveis!.map(responsavel => ProjetoFaseResponsavel.criarFormulario(responsavel)))
     });
   }
   

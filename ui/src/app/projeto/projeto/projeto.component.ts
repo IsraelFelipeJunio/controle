@@ -19,12 +19,13 @@ import { ProjetoFaseResponsavel } from '../../model/projeto-fase-responsavel';
 import { ProjetoAtaReuniao } from '../../model/projeto-ata-reuniao';
 import { ProjetoAtaReuniaoService } from '../../service/projeto-ata-reuniao.service';
 import { ProjetoAtaReuniaoParticipante } from '../../model/projeto-ata-reuniao-participante';
-import { ProjetoFaseRecurso } from '../../model/projeto-fase-recurso';
 import { Recurso } from '../../model/recurso';
 import { RecursoService } from '../../service/recurso.service';
 import { ProjetoFaseTarefa } from '../../model/projeto-fase-tarefa';
 import { Tarefa } from '../../model/tarefa';
 import { TarefaService } from '../../service/tarefa.service';
+import { ProjetoFaseTarefaService } from '../../service/projeto-fase-tarefa.service';
+import { ProjetoFaseTarefaRecurso } from '../../model/projeto-fase-tarefa-recurso';
 
 @Component({
   selector: 'app-projeto',
@@ -44,14 +45,6 @@ export class ProjetoComponent {
   subjectUsuario: Subject<string> = new Subject<string>();
   usuarios: Usuario[] = [];
   
-  // PROJETO FASE
-  projetoFases: ProjetoFase[] = [];
-  projetoFase: ProjetoFase = new ProjetoFase();
-
-  // PROJETO ATA REUNIÃO
-  projetoAtaReunioes: ProjetoAtaReuniao[] = [];
-  projetoAtaReuniao: ProjetoAtaReuniao = new ProjetoAtaReuniao();
-
   // NG SELECT PROJETO FASE
   subjectProjetoFase: Subject<string> = new Subject<string>();
   projetoFasesConsulta: ProjetoFase[] = [];
@@ -64,9 +57,27 @@ export class ProjetoComponent {
   subjectTarefa: Subject<string> = new Subject<string>();
   tarefas: Tarefa[] = [];
 
+  // NG SELECT PROJETO FASE TAREFA
+  subjectProjetoFaseTarefa: Subject<string> = new Subject<string>();
+  projetoFasesTarefaConsulta: ProjetoFaseTarefa[] = [];
+
+
+  // PROJETO FASE
+  projetoFases: ProjetoFase[] = [];
+  projetoFase: ProjetoFase = new ProjetoFase();
+
+  // PROJETO FASE
+  projetoFaseTarefas: ProjetoFaseTarefa[] = [];
+  projetoFaseTarefa: ProjetoFaseTarefa = new ProjetoFaseTarefa();
+
+  // PROJETO ATA REUNIÃO
+  projetoAtaReunioes: ProjetoAtaReuniao[] = [];
+  projetoAtaReuniao: ProjetoAtaReuniao = new ProjetoAtaReuniao();
+
   closeResult: string = '';
   projetoFormGroup: FormGroup = new Projeto().criarFormulario(new Projeto());
   projetoFaseFormGroup: FormGroup = new ProjetoFase().criarFormulario(new ProjetoFase());
+  projetoFaseTarefaFormGroup: FormGroup = new ProjetoFaseTarefa().criarFormulario(new ProjetoFaseTarefa());
   projetoAtaReuniaoFormGroup: FormGroup = new ProjetoAtaReuniao().criarFormulario(new ProjetoAtaReuniao());
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -75,6 +86,7 @@ export class ProjetoComponent {
               private projetoService: ProjetoService,
               private projetoFaseService: ProjetoFaseService,
               private projetoAtaReuniaoService: ProjetoAtaReuniaoService,
+              private projetoFaseTarefaService: ProjetoFaseTarefaService,
               private categoriaService: CategoriaService,
               private usuarioService: UsuarioService,
               private recursoService: RecursoService,
@@ -93,10 +105,10 @@ export class ProjetoComponent {
         }
 
         // Lista Fases
-        this.listarFases();
+        this.listarFases(this.projetoFormGroup!.get('id')!.value);
 
         // Lista Atas de Reunião
-        this.listarAtaReunioes();
+        this.listarAtaReunioes(this.projetoFormGroup!.get('id')!.value);
       });
 
     } else {
@@ -139,7 +151,7 @@ export class ProjetoComponent {
     });
     this.subjectUsuario.next('');
 
-    // NG SELECT PROJETO Fase
+    // NG SELECT PROJETO FASE
     this.subjectProjetoFase.pipe(
       debounceTime(500),
       distinctUntilChanged(),
@@ -177,14 +189,36 @@ export class ProjetoComponent {
   }
 
   salvar() {
-    this.projetoService.salvar(this.projetoFormGroup.value).subscribe(c => {
+    this.projetoService.salvar(this.projetoFormGroup.value).subscribe(() => {
+      
+      this.projetoService.consultaProjetoCadastrado().subscribe(projeto => {
+
+        this.projetoFormGroup = new Projeto().criarFormulario(projeto);
+
+        if (projeto!.projetoResponsaveis!.length == 0) {
+          this.adicionarProjetoResponsavel();
+        }
+
+        // Lista Fases
+        this.listarFases(projeto.id);
+
+        // Lista Atas de Reunião
+        this.listarAtaReunioes(projeto.id);
+
+        this.toastrService.success('Projeto Salvo');
+      });
+    });
+  }
+
+  salvarFechar() {
+    this.projetoService.salvar(this.projetoFormGroup.value).subscribe(() => {
       this.toastrService.success('Projeto Salvo');
       this.router.navigate(['/projeto']);
     });
   }
 
   excluir() {
-    this.projetoService.excluir(this.projetoFormGroup.value.id).subscribe(c => {
+    this.projetoService.excluir(this.projetoFormGroup!.get('id').value).subscribe(c => {
       this.toastrService.success('Projeto Excluído');
       this.router.navigate(['/projeto']);
     });
@@ -204,6 +238,10 @@ export class ProjetoComponent {
 
   consultarProjetoFases(term: any) {
     this.subjectProjetoFase.next(term.term);
+  }
+
+  consultarProjetoFaseTarefas(term: any) {
+    this.subjectProjetoFaseTarefa.next(term.term);
   }
 
   consultarRecursos(term: any) {
@@ -242,12 +280,7 @@ export class ProjetoComponent {
     if (projetoFase!.projetoFaseResponsaveis!.length == 0) {
       this.adicionarFaseProjetoResponsavel();
     }
-    if (projetoFase!.projetoFaseRecursos!.length == 0) {
-      this.adicionarFaseProjetoRecurso();
-    }
-    if (projetoFase!.projetoFaseTarefas!.length == 0) {
-      this.adicionarFaseProjetoTarefa();
-    }
+    this.listarTarefas(projetoFase.id);
     
     this.modalService.open(modalFase, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
 			this.closeResult = `Closed with: ${result}`;
@@ -283,13 +316,13 @@ export class ProjetoComponent {
 
     this.projetoFaseService.salvar(projetoFase)
       .subscribe(() => {
-        this.listarFases();
+        this.listarFases(this.projetoFormGroup!.get('id')!.value);
         this.modalService.dismissAll();
       });
   }
 
-  listarFases() {
-    this.projetoFaseService.consultarPorProjeto(this.activatedRoute.snapshot.paramMap.get('id'))
+  listarFases(id: number) {
+    this.projetoFaseService.consultarPorProjeto(id)
       .subscribe(dados => {
         this.projetoFases = dados;
         this.projetoFases.sort((a, b) => a.codigo - b.codigo);
@@ -307,31 +340,89 @@ export class ProjetoComponent {
   excluirFaseProjetoResponsavel(index: any) {
     (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseResponsaveis']).removeAt(index);
   }
-
-  projetoFaseRecursosFormArray(): FormArray {
-    return this.projetoFaseFormGroup.get('projetoFaseRecursos') as FormArray;
-  }
-
-  adicionarFaseProjetoRecurso() {
-    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseRecursos']).push(ProjetoFaseRecurso.criarFormulario(new ProjetoFaseRecurso()));
-  }
-
-  excluirFaseProjetoRecurso(index: any) {
-    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseRecursos']).removeAt(index);
-  }
-
-  projetoFaseTarefasFormArray(): FormArray {
-    return this.projetoFaseFormGroup.get('projetoFaseTarefas') as FormArray;
-  }
-
-  adicionarFaseProjetoTarefa() {
-    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseTarefas']).push(ProjetoFaseTarefa.criarFormulario(new ProjetoFaseTarefa()));
-  }
-
-  excluirFaseProjetoTarefa(index: any) {
-    (<FormArray>this.projetoFaseFormGroup.controls['projetoFaseTarefas']).removeAt(index);
-  }
   /* ------------------------------------------------- FASES DO PROJETO -------------------------------------------------- */
+
+
+  /* ------------------------------------------------- TAREFA / RECURSOS ------------------------------------------------- */
+  editarFaseProjetoTarefa(projetoFaseTarefa: ProjetoFaseTarefa, modalTarefa: string) {
+    this.projetoFaseTarefaFormGroup = new ProjetoFaseTarefa().criarFormulario(projetoFaseTarefa);
+    if (projetoFaseTarefa!.recursos!.length == 0) {
+      this.adicionarFaseTarefaRecurso();
+    }
+
+    this.selectProjetoFaseTarefas(this.projetoFaseTarefaFormGroup!.get('id')!.value);
+    
+    this.modalService.open(modalTarefa, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+			this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+		});
+  }
+
+  excluirFaseProjetoTarefa(index: any, projetoFaseTarefa: ProjetoFaseTarefa) {
+    this.projetoFaseTarefas.splice(index);
+    this.projetoFaseTarefaService.excluir(projetoFaseTarefa.id).subscribe(() => {
+      this.toastrService.success('Tarefa excluída!');
+    });
+  }
+
+  adicionarFaseProjetoTarefa(modalTarefa: string) {
+    this.projetoFaseTarefaFormGroup = new ProjetoFaseTarefa().criarFormulario(new ProjetoFaseTarefa());
+    this.projetoFaseTarefaFormGroup!.get('codigo').setValue(this.projetoFaseTarefas.length + 1);
+    this.adicionarFaseTarefaRecurso();
+    this.selectProjetoFaseTarefas(null);
+
+    this.modalService.open(modalTarefa, {ariaLabelledBy: 'modal-basic-title', size: 'lg'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+		}, (reason) => {
+			this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+		});
+  }
+
+  atualizarFaseProjetoTarefa(projetoFaseTarefaFormGroup) {
+    const projetoFaseTarefa = projetoFaseTarefaFormGroup.value;
+    if (projetoFaseTarefa.id == null) {
+      projetoFaseTarefa.projetoFase = this.projetoFaseFormGroup.value;
+    }
+
+    this.projetoFaseTarefaService.salvar(projetoFaseTarefa)
+      .subscribe(() => {
+        this.listarTarefas(projetoFaseTarefa.projetoFase.id);
+      });
+  }
+
+  listarTarefas(id: number) {
+    this.projetoFaseTarefaService.consultarPorProjetoFase(id).subscribe(data => {
+      this.projetoFaseTarefas = data;
+    });
+  }
+
+  selectProjetoFaseTarefas(id: number) {
+    // NG SELECT PROJETO FASE TAREFA
+    this.subjectProjetoFaseTarefa.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(ret => {
+        return this.projetoFaseTarefaService.consultarSelectPorProjetoFasePai(ret, id);
+      }),
+    ).subscribe(dados => {
+      this.projetoFasesTarefaConsulta = dados;
+    });
+    this.subjectProjetoFaseTarefa.next('');
+  }
+
+  projetoFaseTarefaRecursosFormArray(): FormArray {
+    return this.projetoFaseTarefaFormGroup.get('recursos') as FormArray;
+  }
+
+  adicionarFaseTarefaRecurso() {
+    (<FormArray>this.projetoFaseTarefaFormGroup.controls['recursos']).push(ProjetoFaseTarefaRecurso.criarFormulario(new ProjetoFaseTarefaRecurso()));
+  }
+
+  excluirFaseTarefaRecurso(index: any) {
+    (<FormArray>this.projetoFaseTarefaFormGroup.controls['recursos']).removeAt(index);
+  }
+  /* ------------------------------------------------- TAREFA / RECURSOS ------------------------------------------------- */
 
 
   /* --------------------------------------------- ATAS DE REUNIÃO DO PROJETO -------------------------------------------- */
@@ -375,13 +466,13 @@ export class ProjetoComponent {
 
     this.projetoAtaReuniaoService.salvar(projetoAtaReuniao)
       .subscribe(() => {
-        this.listarAtaReunioes();
+        this.listarAtaReunioes(this.projetoFormGroup!.get('id')!.value);
         this.modalService.dismissAll();
       });
   }
   
-  listarAtaReunioes() {
-    this.projetoAtaReuniaoService.consultarPorProjeto(this.activatedRoute.snapshot.paramMap.get('id'))
+  listarAtaReunioes(id: number) {
+    this.projetoAtaReuniaoService.consultarPorProjeto(id)
       .subscribe(dados => {
         this.projetoAtaReunioes = dados;
         this.projetoAtaReunioes.sort((a, b) => a.codigo - b.codigo);

@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
 import com.example.demo.model.enuns.StatusFase;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,16 +45,14 @@ public class ProjetoFase {
     @Column(name = "status_fase")
     private StatusFase statusFase;
 
+    @Column(name = "custo_previsto")
+    private BigDecimal custoPrevisto;
+
+    @Column(name = "custo_executado")
+    private BigDecimal custoExecutado;
+
     @ElementCollection
     @CollectionTable(name = "projeto_fase_responsavel", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
     private List<ProjetoFaseResponsavel> projetoFaseResponsaveis = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "projeto_fase_recurso", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
-    private List<ProjetoFaseRecurso> projetoFaseRecursos = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable(name = "projeto_fase_tarefa", joinColumns = {@JoinColumn(name = "projeto_fase_id")})
-    private List<ProjetoFaseTarefa> projetoFaseTarefas = new ArrayList<>();
 
 }

@@ -62,6 +62,11 @@ export class ProjetoService {
         return this.http.get<any>(`${environment.apiUrl}/projeto/${id}`);
     }
 
+    consultaProjetoCadastrado(): Observable<Projeto> {
+
+        return this.http.get<any>(`${environment.apiUrl}/projeto/consultaProjetoCadastrado`);
+    }
+
     excluir(id: number): Observable<any> {
 
         return this.http.delete<any>(`${environment.apiUrl}/projeto/${id}`);

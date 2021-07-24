@@ -27,4 +27,6 @@ public interface ProjetoRepository extends JpaRepository<Projeto,Long> {
 
     Projeto findByIdOrderByIdDesc(Long id);
 
+    Projeto findFirstByOrderByIdDesc();
+
 }

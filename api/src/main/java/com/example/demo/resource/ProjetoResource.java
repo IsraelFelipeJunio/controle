@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,11 @@ public class ProjetoResource {
     @CrossOrigin
     @PostMapping
     private ResponseEntity<Projeto> novo(@RequestBody Projeto projeto) {
-
+        if (projeto.isGerarPrevisaoCusto()) {
+            projeto.setCustoPrevisto(BigDecimal.ZERO);
+            projeto.setCustoExecutado(BigDecimal.ZERO);
+        }
+        projeto.setAndamento(0.0);
         return ResponseEntity.ok(projetoRepository.save(projeto));
     }
 
@@ -69,6 +74,12 @@ public class ProjetoResource {
     public Projeto consultarPorId(@PathVariable Long id) {
 
         return projetoRepository.findByIdOrderByIdDesc(id);
+    }
+
+    @GetMapping(value = "/consultaProjetoCadastrado")
+    public Projeto consultaProjetoCadastrado() {
+
+        return projetoRepository.findFirstByOrderByIdDesc();
     }
 
     @DeleteMapping(path = {"/{id}"})

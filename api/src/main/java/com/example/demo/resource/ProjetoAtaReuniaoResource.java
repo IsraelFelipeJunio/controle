@@ -3,8 +3,6 @@ package com.example.demo.resource;
 import com.example.demo.model.ProjetoAtaReuniao;
 import com.example.demo.repository.ProjetoAtaReuniaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +20,6 @@ public class ProjetoAtaReuniaoResource {
     @GetMapping
     public List<ProjetoAtaReuniao> listar() {
         return projetoFaseRepository.findAll();
-    }
-
-    @GetMapping(value = "/dataTable")
-    public Page<ProjetoAtaReuniao> dataTable(@RequestParam(required = false) String pesquisa, @RequestParam int page, @RequestParam int pageSize) {
-
-        return projetoFaseRepository.consultaDataTable(pesquisa, PageRequest.of(page, pageSize));
     }
 
     @CrossOrigin
