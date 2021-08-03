@@ -10,12 +10,13 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
-	<version>2.0.0</version>
-	<name>eflix-api</name>
-	<description>EFlix v2.0</description>
+	<version>1.0.0</version>
+	<name>controle-api</name>
+	<description>Controle v1.0</description>
+	<packaging>war</packaging>
 
 	<properties>
-		<java.version>13</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
@@ -86,17 +87,7 @@
 		</dependency>
 		<!-- SEGURANCA -->
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+
 
 	</dependencies>
 

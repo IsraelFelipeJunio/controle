@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-  CommonModule, registerLocaleData
+  CommonModule, HashLocationStrategy, LocationStrategy, registerLocaleData
 } from '@angular/common';
 import {LOCALE_ID, NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -80,7 +80,8 @@ registerLocaleData(localePt, 'pt-BR');
     },
     {
       provide: LOCALE_ID, useValue: 'pt-BR'
-    }
+    },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

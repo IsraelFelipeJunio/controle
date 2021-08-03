@@ -15,30 +15,13 @@ export class Interceptor implements HttpInterceptor {
         // add authorization header with jwt token if available
         const currentUser: any = this.authenticationService.usuarioLogado;
 
-        // Não colocar autorização no VIACEP
-        if (!request.url.includes('viacep.com.br')) {
-
-            if (currentUser && currentUser.token) {
-                request = request.clone({
-                    setHeaders: {
-                        Authorization: `Bearer ${currentUser.token}`
-                    }
-                });
-            }
-
-          let inquilino: String | null;
-          // @ts-ignore
-          inquilino = localStorage.getItem('inquilino').replace(/['"]+/g, '');
-
-          request = request.clone({
-            setHeaders: {
-              'X-TENANT-ID': `${inquilino}`
-            }
-          });
-
+        if (currentUser && currentUser.token) {
+            request = request.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${currentUser.token}`
+                }
+            });
         }
-
-
 
         return next.handle(request).pipe(catchError(err => {
 

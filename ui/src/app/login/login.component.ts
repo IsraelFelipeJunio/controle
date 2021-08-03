@@ -18,6 +18,8 @@ export class LoginComponent implements OnInit {
               private toastr: ToastrService,
               private router: Router) {
 
+    localStorage.removeItem('usuarioLogado');
+
     this.loginForm = this.formBuilder.group({
       empresa: ['', Validators.required],
       email: ['', Validators.required],
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           console.log(data);
-          this.toastr.success('Bem Vindo ao Cloud ERP');
+          this.toastr.success('Bem Vindo a Sala de Controle');
           this.router.navigate(['/dashboard/classic']);
         },
         error => {
