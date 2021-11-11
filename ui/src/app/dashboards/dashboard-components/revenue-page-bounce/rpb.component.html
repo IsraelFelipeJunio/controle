@@ -3,7 +3,7 @@
     <div class="col-lg-4">
         <div class="card bg-info text-white  card-hover">
             <div class="card-body">
-                <h4 class="card-title">Revenue Statistics</h4>
+                <h4 class="card-title">Custo Previsto</h4>
                 <div class="d-flex align-items-center m-t-30">
                     <div class="mt-3" style="height: 84px; width: 100px">
                         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
@@ -12,8 +12,8 @@
                         </canvas>
                     </div>
                     <div class="ml-auto">
-                        <h3 class="font-medium white-text m-b-0">$3501</h3>
-                        <span class="white-text op-5">Jan 10 - Jan 20</span>
+                        <h3 class="font-medium white-text m-b-0">{{this.dashboardDTO.custoPrevisto | currency:'BRL':true:'1.2-2'}}</h3>
+                        <!-- <span class="white-text op-5">Jan 01 - Out 01</span> -->
                     </div>
                 </div>
             </div>
@@ -21,16 +21,21 @@
     </div>
     <!-- column -->
     <div class="col-lg-4">
-        <div class="card bg-cyan text-white  card-hover">
+        <div class="card bg-success text-white  card-hover">
             <div class="card-body">
-                <h4 class="card-title">Page Views</h4>
-                <h3 class="white-text m-b-0">
-                    <i class="ti-arrow-up"></i> 6548</h3>
-            </div>
-            <div style="height: 90px;">
-                <canvas baseChart [datasets]="lineChartData1" [labels]="lineChartLabels1" [options]="lineChartOptions1"
-                    [colors]="lineChartColors1" [legend]="lineChartLegend1" [chartType]="lineChartType1">
-                </canvas>
+                <h4 class="card-title">Custo Executado</h4>
+                <div class="d-flex align-items-center m-t-30">
+                    <div class="mt-3" style="height: 84px; width: 100px">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels"
+                            [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend"
+                            [chartType]="barChartType">
+                        </canvas>
+                    </div>
+                    <div class="ml-auto">
+                        <h3 class="font-medium white-text m-b-0">{{this.dashboardDTO.custoExecutado | currency:'BRL':true:'1.2-2'}}</h3>
+                        <!-- <span class="white-text op-5">Jan 01 - Ago 19</span> -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -38,11 +43,11 @@
     <div class="col-lg-4">
         <div class="card  card-hover">
             <div class="card-body">
-                <h4 class="card-title">Bounce Rate</h4>
+                <h4 class="card-title">Andamento</h4>
                 <div class="d-flex no-block align-items-center m-t-30">
                     <div class="">
-                        <h3 class="font-medium m-b-0">56.33%</h3>
-                        <span class="">Total Bounce</span>
+                        <h3 class="font-medium m-b-0">{{this.dashboardDTO.andamentoMediaGeral | number :'2.2-5' }} %</h3>
+                        <span class="">Total Executado</span>
                     </div>
                     <div class="ml-auto">
                         <div class="bounce m-b-40">

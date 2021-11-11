@@ -2,6 +2,7 @@ package com.example.demo.resource;
 
 import com.example.demo.model.ProjetoFaseTarefa;
 import com.example.demo.repository.ProjetoFaseTarefaRepository;
+import com.example.demo.service.ProjetoFaseTarefaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,9 @@ public class ProjetoFaseTarefaResource {
 
     @Autowired
     private ProjetoFaseTarefaRepository projetoFaseTarefaRepository;
+
+    @Autowired
+    private ProjetoFaseTarefaService projetoFaseTarefaService;
 
 
     @GetMapping
@@ -60,15 +64,17 @@ public class ProjetoFaseTarefaResource {
 
     @CrossOrigin
     @PostMapping
-    private ResponseEntity<ProjetoFaseTarefa> novo(@RequestBody ProjetoFaseTarefa projetoFase) {
-        return ResponseEntity.ok(projetoFaseTarefaRepository.save(projetoFase));
+    private ResponseEntity<ProjetoFaseTarefa> novo(@RequestBody ProjetoFaseTarefa projetoFaseTarefa) {
+        projetoFaseTarefa.setDescricao(projetoFaseTarefa.getDescricao().toUpperCase());
+        projetoFaseTarefa.getRecursos().stream().forEach(tar -> tar.setDescricao(tar.getDescricao().toUpperCase()));
+        return ResponseEntity.ok(projetoFaseTarefaService.salvar(projetoFaseTarefa));
     }
 
     @CrossOrigin
     @PutMapping(value = "/{id}")
-    private ResponseEntity<ProjetoFaseTarefa> alterar(@RequestBody ProjetoFaseTarefa projetoFase, @PathVariable Long id) {
-        projetoFase.setId(id);
-        return ResponseEntity.ok(projetoFaseTarefaRepository.save(projetoFase));
+    private ResponseEntity<ProjetoFaseTarefa> alterar(@RequestBody ProjetoFaseTarefa projetoFaseTarefa, @PathVariable Long id) {
+        projetoFaseTarefa.setId(id);
+        return ResponseEntity.ok(projetoFaseTarefaService.salvar(projetoFaseTarefa));
     }
 
     @GetMapping(value = "/{id}")

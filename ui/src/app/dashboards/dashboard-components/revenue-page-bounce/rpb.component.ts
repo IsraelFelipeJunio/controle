@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { DashboardDTO } from '../../../model/dashboard-dto';
+import { DashboardService } from '../../../service/dashboard.service';
 
 @Component({
   selector: "app-rpb",
@@ -6,7 +8,16 @@ import { Component } from "@angular/core";
   styleUrls: ["./rpb.component.css"],
 })
 export class RpbComponent {
-  constructor() {}
+
+  dashboardDTO: DashboardDTO = new DashboardDTO();
+
+  constructor(
+    private dashboardService: DashboardService,
+  ) {
+    this.dashboardService.listarDashboard().subscribe(dashboard => {
+      this.dashboardDTO = dashboard;
+    });
+  }
 
   public lineChartData: Array<any> = [
     { data: [12, 19, 3, 5, 2, 3], label: "Bounce", barPercentage: 0.2, categoryPercentage: 0.5 },

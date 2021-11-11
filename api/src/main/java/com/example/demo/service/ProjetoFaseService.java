@@ -38,6 +38,18 @@ public class ProjetoFaseService {
             this.atualizarPrevisaoCusto(projetoFase, projetoFaseTarefas);
         }
 
+        // Atualiza Andamento
+        if (projetoFaseTarefas.size() > 0) {
+            Double somaAndamentos = 0.0;
+            for (ProjetoFaseTarefa projeto : projetoFaseTarefas) {
+                somaAndamentos = somaAndamentos + projeto.getAndamento();
+            }
+            Double andamento = somaAndamentos / projetoFaseTarefas.size();
+            double andamentoArredondado = Math.round(andamento * 100.0) / 100.0;
+            projetoFase.setAndamento(andamentoArredondado);
+            projetoFaseRepository.save(projetoFase);
+        }
+
         return projetoFase;
     }
 
@@ -58,7 +70,7 @@ public class ProjetoFaseService {
         }
     }
 
-    private void atualizarPrevisaoCusto(ProjetoFase projetoFase, List<ProjetoFaseTarefa> tarefas) {
+    public void atualizarPrevisaoCusto(ProjetoFase projetoFase, List<ProjetoFaseTarefa> tarefas) {
 
         BigDecimal custoPrevisto = BigDecimal.ZERO;
         BigDecimal custoExecutado = BigDecimal.ZERO;
@@ -82,10 +94,9 @@ public class ProjetoFaseService {
         projetoService.atualizarPrevisaoCusto(projetoFase.getProjeto());
     }
 
-    private List<ProjetoFaseTarefa> retornaTarefas(Long projetoFaseId) {
+    public List<ProjetoFaseTarefa> retornaTarefas(Long projetoFaseId) {
         List<ProjetoFaseTarefa> projetoFaseTarefas = projetoFaseTarefaRepository.findByProjetoFaseId(projetoFaseId);
         return !projetoFaseTarefas.isEmpty() ? projetoFaseTarefas : new ArrayList<>();
-//        return projetoFaseTarefaRepository.findByProjetoFaseId(projetoFaseId);
     }
 
 }

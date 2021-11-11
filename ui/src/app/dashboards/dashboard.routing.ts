@@ -19,10 +19,10 @@ export const DashboardRoutes: Routes = [
         path: 'classic',
         component: Dashboard1Component,
         data: {
-          title: 'Classic Dashboard',
+          title: '',
           urls: [
             { title: 'Dashboard', url: '/dashboard' },
-            { title: 'Classic Dashboard' }
+            { title: '' }
           ]
         }
       },

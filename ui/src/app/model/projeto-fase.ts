@@ -12,15 +12,18 @@ export class ProjetoFase {
   dataInicio: Date | undefined;
   dataFim: Date | undefined;
   projeto: Projeto | undefined;
-  andamento: number | 0;
+  andamento: number | undefined;
   levantamentoRequisito: string | undefined;
   statusFase: StatusFase | undefined;
-  custoPrevisto: number | 0;
-  custoExecutado: number | 0;
+  custoPrevisto: number | undefined;
+  custoExecutado: number | undefined;
   projetoFaseResponsaveis: ProjetoFaseResponsavel [] | undefined;
 
   constructor() {
     this.projetoFaseResponsaveis = [];
+    this.andamento = 0;
+    this.custoExecutado = 0;
+    this.custoPrevisto = 0;
   }
 
   criarFormulario(projetoFase: ProjetoFase) {

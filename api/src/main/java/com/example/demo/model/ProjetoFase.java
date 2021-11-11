@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import com.example.demo.model.enuns.StatusFase;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;

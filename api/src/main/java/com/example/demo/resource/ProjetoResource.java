@@ -2,6 +2,7 @@ package com.example.demo.resource;
 
 import com.example.demo.model.Projeto;
 import com.example.demo.repository.ProjetoRepository;
+import com.example.demo.service.ProjetoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,9 @@ public class ProjetoResource {
 
     @Autowired
     private ProjetoRepository projetoRepository;
+
+    @Autowired
+    private ProjetoService projetoService;
 
 
     @GetMapping
@@ -59,7 +63,8 @@ public class ProjetoResource {
             projeto.setCustoExecutado(BigDecimal.ZERO);
         }
         projeto.setAndamento(0.0);
-        return ResponseEntity.ok(projetoRepository.save(projeto));
+        projeto.setDescricao(projeto.getDescricao().toUpperCase());
+        return ResponseEntity.ok(projetoService.salvar(projeto));
     }
 
     @CrossOrigin
@@ -67,7 +72,7 @@ public class ProjetoResource {
     private ResponseEntity<Projeto> alterar(@RequestBody Projeto projeto, @PathVariable Long id) {
 
         projeto.setId(id);
-        return ResponseEntity.ok(projetoRepository.save(projeto));
+        return ResponseEntity.ok(projetoService.salvar(projeto));
     }
 
     @GetMapping(value = "/{id}")

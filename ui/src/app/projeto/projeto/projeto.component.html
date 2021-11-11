@@ -164,9 +164,9 @@
                 </div>
               </ng-template>
             </ngb-tab>
-            <ngb-tab title="Fases">
+            <ngb-tab title="Fases" *ngIf="projetoFormGroup!.get('id').value">
               <ng-template ngbTabContent>
-                <div class="form-body p-t-20" *ngIf="projetoFormGroup!.get('id').value">
+                <div class="form-body p-t-20">
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="table-responsive" style="overflow-x: visible !important;">
@@ -176,6 +176,7 @@
                             <th>Código</th>
                             <th>Descrição</th>
                             <th>Status</th>
+                            <th>Andamento</th>
                             <th></th>
                             <th></th>
                           </tr>
@@ -185,6 +186,7 @@
                             <td style="padding-left: 20px">{{item.codigo}}</td>
                             <td>{{item.descricao}}</td>
                             <td>{{item.statusFase}}</td>
+                            <td>{{item.andamento | number :'2.2-2'}} %</td>
                             <td style="text-align: center ; cursor: pointer"
                                 (click)="editarFaseProjeto(item, modalFase)">
                               <i class="fa fa-edit"></i>
@@ -217,9 +219,9 @@
                 </ngb-accordion> -->
               </ng-template>
             </ngb-tab>
-            <ngb-tab title="Atas">
+            <ngb-tab title="Atas" *ngIf="projetoFormGroup!.get('id').value">
               <ng-template ngbTabContent>
-                <div class="form-body p-t-20" *ngIf="projetoFormGroup!.get('id').value">
+                <div class="form-body p-t-20">
                   <div class=" row">
                     <div class="col-lg-12">
                       <div class="table-responsive" style="overflow-x: visible !important;">
@@ -271,14 +273,14 @@
         <div class="d-flex no-block align-items-center">
           <div class="action-form">
             <div class="form-group m-b-0 text-center">
-              <button type="button" (click)="excluir()" *ngIf="projetoFormGroup!.get('id')!.value"
+              <button type="button" (click)="excluir()" *ngIf="projetoFormGroup!.get('id')!.value && projetoFases.length==0 && projetoAtaReunioes.length==0"
                       class="btn btn-danger">Excluir
               </button>
             </div>
           </div>
           <div class="ml-auto">
             <div class="btn-group">
-              <a routerLink="/projeto" style="padding-top: 14px; margin-right: 20px">voltar...</a>
+              <a routerLink="/projeto" style="padding-top: 14px; margin-right: 20px">Voltar...</a>
               <button type="button" (click)="salvar()" [disabled]="projetoFormGroup.invalid" *ngIf="!projetoFormGroup!.get('id').value" class="btn btn-success">Salvar</button>
               <button type="button" (click)="salvarFechar()" [disabled]="projetoFormGroup.invalid" *ngIf="projetoFormGroup!.get('id').value" class="btn btn-success">Salvar</button>
             </div>
@@ -435,19 +437,18 @@
                       <th>Descrição</th>
                       <th>Tarefa</th>
                       <th>Responsável</th>
-                      <th>Data Início</th>
-                      <th>Data Fim</th>
+                      <th>Andamento</th>
                       <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let item of projetoFaseTarefas; let i = index;">
-                      <td >{{item.codigo}}</td>
-                      <td >{{item.descricao}}</td>
-                      <td >{{item.tarefa?.descricao}}</td>
-                      <td >{{item.usuarioResponsavel?.nome}}</td>
-                      <td >{{item.dataInicio | date: 'dd/MM/yyyy' }}</td>
-                      <td >{{item.dataFim | date: 'dd/MM/yyyy' }}</td>
+                      <td>{{item.codigo}}</td>
+                      <td>{{item.descricao}}</td>
+                      <td>{{item.tarefa?.descricao}}</td>
+                      <td>{{item.usuarioResponsavel?.nome}}</td>
+                      <td>{{item.andamento | number :'2.2-2'}} %</td>
+                      <!-- <td >{{item.dataFim | date: 'dd/MM/yyyy' }}</td> -->
                       <td style="text-align: center ; cursor: pointer"
                           (click)="editarFaseProjetoTarefa(item, modalTarefa)">
                         <i class="fa fa-edit"></i>

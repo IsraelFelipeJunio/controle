@@ -54,4 +54,22 @@ public class ProjetoService {
         projetoRepository.save(projeto);
     }
 
+    public Projeto salvar(Projeto projeto) {
+
+        List<ProjetoFase> projetoFases = projetoFaseRepository.findByProjetoId(projeto.getId());
+
+        // Atualiza Andamento
+        if (projetoFases.size() > 0) {
+            Double somaFases = 0.0;
+            for (ProjetoFase projetoFase : projetoFases) {
+                somaFases = somaFases + projetoFase.getAndamento();
+            }
+            Double andamento = somaFases / projetoFases.size();
+            double andamentoArredondado = Math.round(andamento * 100.0) / 100.0;
+            projeto.setAndamento(andamentoArredondado);
+            projetoRepository.save(projeto);
+        }
+        return projeto;
+    }
+
 }

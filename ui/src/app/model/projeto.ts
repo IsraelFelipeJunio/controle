@@ -15,13 +15,16 @@ export class Projeto {
   dataInicio: Date | undefined;
   dataFim: Date | undefined;
   gerarPrevisaoCusto: boolean | false;
-  custoPrevisto: number | 0;
-  custoExecutado: number | 0;
+  custoPrevisto: number | undefined;
+  custoExecutado: number | undefined;
   projetoResponsaveis: ProjetoResponsavel [] | undefined;
 
   constructor() {
     this.statusProjeto = StatusProjeto.PROBLEMA;
     this.projetoResponsaveis = [];
+    this.andamento = 0;
+    this.custoExecutado = 0;
+    this.custoPrevisto = 0;
   }
 
   criarFormulario(projeto: Projeto) {

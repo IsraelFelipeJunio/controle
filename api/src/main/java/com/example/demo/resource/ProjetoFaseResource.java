@@ -1,10 +1,8 @@
 package com.example.demo.resource;
 
 import com.example.demo.model.ProjetoFase;
-import com.example.demo.model.ProjetoFaseTarefa;
 import com.example.demo.model.enuns.StatusFase;
 import com.example.demo.repository.ProjetoFaseRepository;
-import com.example.demo.repository.ProjetoFaseTarefaRepository;
 import com.example.demo.service.ProjetoFaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,9 +24,6 @@ public class ProjetoFaseResource {
 
     @Autowired
     private ProjetoFaseService projetoFaseService;
-
-    @Autowired
-    private ProjetoFaseTarefaRepository projetoFaseTarefaRepository;
 
 
     @GetMapping
@@ -69,6 +64,10 @@ public class ProjetoFaseResource {
         if (projetoFase.getProjeto().isGerarPrevisaoCusto()) {
             projetoFase.setCustoPrevisto(BigDecimal.ZERO);
             projetoFase.setCustoExecutado(BigDecimal.ZERO);
+        }
+        projetoFase.setDescricao(projetoFase.getDescricao().toUpperCase());
+        if (projetoFase.getLevantamentoRequisito() != null) {
+            projetoFase.setLevantamentoRequisito(projetoFase.getLevantamentoRequisito().toUpperCase());
         }
         return ResponseEntity.ok(projetoFaseService.salvar(projetoFase));
     }
